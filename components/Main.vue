@@ -151,11 +151,11 @@ onMounted(() => {
     <div v-show="errorInfo.isShow" b="rd-6px 1px color-#cf222e opacity-50" color="#cf222e" mb-10px text-center p-y-8px>
       {{ errorInfo.message }}
     </div>
-    <div v-if="commitInfo.isShow" cursor-pointer hover:shadow-md flex="~ col" b="rd-6px 1px color-#d0d7de" p-y-8px p-x-16px>
+    <div v-if="commitInfo.isShow" cursor-pointer hover:shadow-md flex="~ col" b="rd-6px 1px color-#d0d7de" p-y-8px p-x-16px @click="goPage">
       <div color="#24292f" dark:color="white" font-600>
         {{ commitInfo.message }}
       </div>
-      <div text-12px @click="goPage">
+      <div text-12px>
         <span font-600 mr-5px>{{ commitInfo.author }}</span>
         <span color="#24292f" dark:color="white">committed {{ commitInfo.date }}</span>
       </div>
