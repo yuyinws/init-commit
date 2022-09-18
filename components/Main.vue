@@ -8,7 +8,7 @@ const errorInfo = reactive({
   isShow: false,
   message: '',
 })
-const suggests = ['microsoft/vscode', 'github.com/vuejs/vue', 'https://github.com/microsoft/TypeScript']
+const suggests = ['microsoft/vscode', 'github.com/vuejs/core', 'https://github.com/microsoft/TypeScript']
 
 function parseInput(input: string) {
   const splitArr = input.split('/')
