@@ -4,29 +4,30 @@ export default defineEventHandler(async (event) => {
   try {
     const { owner, name } = event.context.params
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
-    const data = await octokit.graphql(
+    const data: any = await octokit.graphql(
       `
       {
-        repository(name: "${name}", owner: "${owner}") {
+        repository(name:"${name}",owner:"${owner}") {
           defaultBranchRef {
             name
-          }
-          refs(first: 100, refPrefix: "refs/heads/") {
-            nodes {
-              name
-            }
           }
         }
       }
     `,
     )
     return {
-      data,
+      data: {
+        status: 1,
+        results: data.repository.defaultBranchRef.name,
+      },
     }
   }
   catch (error) {
     return {
-      data: error,
+      data: {
+        status: 0,
+        results: error,
+      },
     }
   }
 })

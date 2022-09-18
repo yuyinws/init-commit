@@ -10,7 +10,6 @@ specifiers:
   '@vueuse/nuxt': ^9.1.1
   eslint: ^8.23.0
   nuxt: ^3.0.0-rc.8
-  pinia: ^2.0.21
   typescript: ^4.8.2
 
 devDependencies:
@@ -23,7 +22,6 @@ devDependencies:
   '@vueuse/nuxt': 9.2.0_nuxt@3.0.0-rc.10
   eslint: 8.23.1
   nuxt: 3.0.0-rc.10_irgkl5vooow2ydyo6aokmferha
-  pinia: 2.0.22_typescript@4.8.3
   typescript: 4.8.3
 
 packages:
@@ -5042,23 +5040,6 @@ packages:
   /pify/2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /pinia/2.0.22_typescript@4.8.3:
-    resolution: {integrity: sha512-u+b8/BC+tmvo3ACbYO2w5NfxHWFOjvvw9DQnyT0dW8aUMCPRQT5QnfZ5R5W2MzZBMTeZRMQI7V/QFbafmM9QHw==}
-    peerDependencies:
-      '@vue/composition-api': ^1.4.0
-      typescript: '>=4.4.4'
-      vue: ^2.6.14 || ^3.2.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@vue/devtools-api': 6.2.1
-      typescript: 4.8.3
-      vue-demi: 0.13.11
     dev: true
 
   /pkg-types/0.3.5:
