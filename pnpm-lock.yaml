@@ -6,7 +6,6 @@ specifiers:
   '@iconify-json/twemoji': ^1.1.5
   '@nuxtjs/color-mode': ^3.1.4
   '@octokit/core': ^4.0.5
-  '@pinia/nuxt': ^0.4.1
   '@unocss/nuxt': ^0.45.13
   '@vueuse/nuxt': ^9.1.1
   eslint: ^8.23.0
@@ -20,7 +19,6 @@ devDependencies:
   '@iconify-json/twemoji': 1.1.5
   '@nuxtjs/color-mode': 3.1.5
   '@octokit/core': 4.0.5
-  '@pinia/nuxt': 0.4.2_typescript@4.8.3
   '@unocss/nuxt': 0.45.21
   '@vueuse/nuxt': 9.2.0_nuxt@3.0.0-rc.10
   eslint: 8.23.1
@@ -916,22 +914,6 @@ packages:
     resolution: {integrity: sha512-aHm+olfIZjQpzoODpl+RCZzchKOrdSLJs+yfI7pMMcmB19Li6vidgx0DwUDO/Ic4Q3fq/lOjJORVCcLZefcrJw==}
     dependencies:
       '@octokit/openapi-types': 13.12.0
-    dev: true
-
-  /@pinia/nuxt/0.4.2_typescript@4.8.3:
-    resolution: {integrity: sha512-yPrJVFOTVDsCcwzVvElLmSFB6IKWo+0WpVmVPCZyj/LD2uNYBK8I3lTPHdZ4q/VS2Sj8LkA7aq6S8PFpwguQ0A==}
-    dependencies:
-      '@nuxt/kit': 3.0.0-rc.10
-      pinia: 2.0.22_typescript@4.8.3
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - esbuild
-      - rollup
-      - supports-color
-      - typescript
-      - vite
-      - vue
-      - webpack
     dev: true
 
   /@polka/url/1.0.0-next.21:
