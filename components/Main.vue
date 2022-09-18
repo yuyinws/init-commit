@@ -137,11 +137,11 @@ onMounted(() => {
       </button>
     </div>
 
-    <div text-12px flex color="#999" mb-10px>
+    <div text-12px flex="~ wrap" color="#999" mb-10px>
       <div mr-5px>
         Suggests:
       </div>
-      <div flex gap-x-10px>
+      <div flex="~ wrap" gap-x-10px>
         <div v-for="(item, i) in suggests" :key="i" cursor-pointer hover:color="#555" @click="onSuggestClick(item)">
           {{ item }}
         </div>
