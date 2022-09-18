@@ -161,7 +161,7 @@ onMounted(() => {
       </div>
     </div>
     <div v-if="isLoading" flex justify-center items-center>
-      <img w-50px h-50px src="../assets/loading.gif" alt="">
+      <img w-50px h-50px src="/loading.gif" alt="">
     </div>
   </div>
 </template>
