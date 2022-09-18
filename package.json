@@ -17,6 +17,7 @@
     "@octokit/core": "^4.0.5",
     "@unocss/nuxt": "^0.45.13",
     "@vueuse/nuxt": "^9.1.1",
+    "dayjs": "^1.11.5",
     "eslint": "^8.23.0",
     "nuxt": "^3.0.0-rc.8",
     "typescript": "^4.8.2"

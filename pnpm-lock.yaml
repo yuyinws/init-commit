@@ -8,6 +8,7 @@ specifiers:
   '@octokit/core': ^4.0.5
   '@unocss/nuxt': ^0.45.13
   '@vueuse/nuxt': ^9.1.1
+  dayjs: ^1.11.5
   eslint: ^8.23.0
   nuxt: ^3.0.0-rc.8
   typescript: ^4.8.2
@@ -20,6 +21,7 @@ devDependencies:
   '@octokit/core': 4.0.5
   '@unocss/nuxt': 0.45.21
   '@vueuse/nuxt': 9.2.0_nuxt@3.0.0-rc.10
+  dayjs: 1.11.5
   eslint: 8.23.1
   nuxt: 3.0.0-rc.10_irgkl5vooow2ydyo6aokmferha
   typescript: 4.8.3
@@ -2330,6 +2332,10 @@ packages:
   /data-uri-to-buffer/4.0.0:
     resolution: {integrity: sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==}
     engines: {node: '>= 12'}
+    dev: true
+
+  /dayjs/1.11.5:
+    resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
     dev: true
 
   /debug/2.6.9:

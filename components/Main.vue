@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import dayjs from 'dayjs'
 const inputText = ref('')
 const isLoading = ref(false)
 const errorInfo = reactive({
@@ -68,7 +69,7 @@ async function onSearch() {
         if (data.status === 1) {
           const { message, committedDate, oid, author } = commitData.results
           commitInfo.message = message
-          commitInfo.date = committedDate
+          commitInfo.date = dayjs(committedDate).format('YYYY-MM-DD hh:mm:ss')
           commitInfo.oid = oid
           commitInfo.author = author.name
           commitInfo.isShow = true
@@ -92,6 +93,11 @@ async function onSearch() {
     isLoading.value = false
     showError('Unkown Error')
   }
+}
+
+function goPage() {
+  const href = `https://github.com/${commitInfo.owner}/${commitInfo.name}/commit/${commitInfo.oid}`
+  window.open(href, '_blank')
 }
 
 function onSuggestClick(input: string) {
@@ -139,7 +145,7 @@ function onSuggestClick(input: string) {
       <div color="#24292f" dark:color="white" font-600>
         {{ commitInfo.message }}
       </div>
-      <div text-12px>
+      <div text-12px @click="goPage">
         <span font-600 mr-5px>{{ commitInfo.author }}</span>
         <span color="#24292f" dark:color="white">committed {{ commitInfo.date }}</span>
       </div>

@@ -29,6 +29,7 @@ export default defineEventHandler(async (event) => {
     const totalCount = data.repository.ref.target.history.totalCount
     const endCursor = data.repository.ref.target.history.nodes[0].oid
 
+    const after = `${endCursor} ${(totalCount - 2).toString()}`
     const commit: any = await octokit.graphql(
       `
       {
@@ -36,7 +37,7 @@ export default defineEventHandler(async (event) => {
           ref(qualifiedName:"${ref}") {
             target {
               ... on Commit {
-                history(first:1,after:"${endCursor} ${totalCount - 2}") {
+                history(first:1,after:"${after}") {
                   nodes {
                     message
                     committedDate
