@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
+
+const route = useRoute()
 const inputText = ref('')
 const isLoading = ref(false)
 const errorInfo = reactive({
@@ -104,6 +106,14 @@ function onSuggestClick(input: string) {
   inputText.value = input
   onSearch()
 }
+
+onMounted(() => {
+  const params = route.params
+  if (params.owner && params.name) {
+    inputText.value = `${params.owner}/${params.name}`
+    onSearch()
+  }
+})
 </script>
 
 <template>
