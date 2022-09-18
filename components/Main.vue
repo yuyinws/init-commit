@@ -1,6 +1,6 @@
 <script setup lang="ts">
 try {
-  const { data } = await $fetch('/api/hello')
+  const { data } = await $fetch('/api/refs/yuyinws/steam-card')
   console.log('🚀 ~ file: PageView.vue ~ line 4 ~ data', data)
 }
 catch (error) {
@@ -9,5 +9,5 @@ catch (error) {
 </script>
 
 <template>
-  12312
+  {{ $route.params }}
 </template>
