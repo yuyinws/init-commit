@@ -53,6 +53,7 @@ const commitInfo = reactive({
   date: '',
   oid: '',
   author: '',
+  avatarUrl: '',
 })
 
 async function onSearch() {
@@ -69,12 +70,13 @@ async function onSearch() {
         const defaultRef = data.results
         const { data: commitData } = await $fetch(`/api/commit/${owner}/${name}/${defaultRef}`)
         if (data.status === 1) {
-          const { message, committedDate, oid, author } = commitData.results
+          const { message, committedDate, oid, author, avatarUrl } = commitData.results
           commitInfo.message = message
           commitInfo.date = dayjs(committedDate).format('YYYY-MM-DD hh:mm:ss')
           commitInfo.oid = oid
           commitInfo.author = author.name
           commitInfo.isShow = true
+          commitInfo.avatarUrl = author.avatarUrl
         }
         else {
           showError('Invalid Repo Link.')
@@ -118,9 +120,11 @@ onMounted(() => {
 
 <template>
   <div mt-10 p-10 flex="~ col">
-    <div w-full text-center text-40px mb-40px font-bold>
-      <span>Find Repo's </span>
-      <span class="spical">First Commit</span>.
+    <div flex="~ row wrap" items-center justify-center gap-x-20px w-full text-center text-40px mb-40px font-bold>
+      <div>Find Repo's</div>
+      <div class="spical">
+        First Commit
+      </div>
     </div>
     <div flex gap-x-20px mb-10px>
       <input
@@ -151,13 +155,18 @@ onMounted(() => {
     <div v-show="errorInfo.isShow" b="rd-6px 1px color-#cf222e opacity-50" color="#cf222e" mb-10px text-center p-y-8px>
       {{ errorInfo.message }}
     </div>
-    <div v-if="commitInfo.isShow" cursor-pointer hover:shadow-md flex="~ col" b="rd-6px 1px color-#d0d7de" p-y-8px p-x-16px @click="goPage">
+    <div v-if="commitInfo.isShow" cursor-pointer hover:shadow-md flex="~ col" gap-y-3px b="rd-6px 1px color-#d0d7de" p-y-8px p-x-16px @click="goPage">
       <div color="#24292f" dark:color="white" font-600>
         {{ commitInfo.message }}
       </div>
-      <div text-12px>
-        <span font-600 mr-5px>{{ commitInfo.author }}</span>
-        <span color="#24292f" dark:color="white">committed {{ commitInfo.date }}</span>
+      <div text-12px flex items-center gap-x-5px>
+        <img w-20px h-20px b-rd="50%" :src="commitInfo.avatarUrl" alt="user">
+        <div font-600>
+          {{ commitInfo.author }}
+        </div>
+        <div color="#24292f" dark:color="white">
+          committed {{ commitInfo.date }}
+        </div>
       </div>
     </div>
     <div v-if="isLoading" flex justify-center items-center>

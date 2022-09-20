@@ -46,6 +46,7 @@ export default defineEventHandler(async (event) => {
                     author {
                       email
                       name
+                      avatarUrl
                     }
                   }
                 }
