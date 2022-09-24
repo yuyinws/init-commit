@@ -9,6 +9,11 @@ const errorInfo = reactive({
   message: '',
 })
 
+const searchResult = reactive({
+  isShow: false,
+  data: [],
+})
+
 function parseInput(input: string) {
   const splitArr = input.split('/')
   if (splitArr.length < 2) {
@@ -58,6 +63,7 @@ const commitInfo = reactive({
 async function onSearch() {
   try {
     isLoading.value = true
+    searchResult.isShow = false
     commitInfo.isShow = false
     const parse = parseInput(inputText.value)
     if (parse) {
@@ -102,11 +108,6 @@ function goPage() {
   const href = `https://github.com/${commitInfo.owner}/${commitInfo.name}/commit/${commitInfo.oid}`
   window.open(href, '_blank')
 }
-
-const searchResult = reactive({
-  isShow: false,
-  data: [],
-})
 
 watchEffect(() => {
   if (inputText.value.length === 0)
@@ -213,12 +214,12 @@ onMounted(() => {
           v-if="commitInfo.isShow"
           w-full absolute top-50px
           cursor-pointer hover:shadow-md
-          flex="~ col wrap" gap-y-3px
+          flex="~ col" gap-y-3px
           b="rd-6px 1px color-#d0d7de"
           p-y-8px p-x-16px
           @click="goPage"
         >
-          <div color="#24292f" dark:color="white" font-600>
+          <div color="#24292f" class="ell" dark:color="white" font-600>
             {{ commitInfo.message }}
           </div>
           <div text-12px flex="~ wrap" items-center gap-5px>
@@ -252,5 +253,12 @@ onMounted(() => {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.ell {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 </style>
