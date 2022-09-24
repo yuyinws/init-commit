@@ -71,7 +71,7 @@ async function onSearch() {
         if (data.status === 1) {
           const { message, committedDate, oid, author, avatarUrl } = commitData.results
           commitInfo.message = message
-          commitInfo.date = dayjs(committedDate).format('YYYY-MM-DD hh:mm:ss')
+          commitInfo.date = dayjs(committedDate).format('MM/DD/YYYY')
           commitInfo.oid = oid
           commitInfo.author = author.name
           commitInfo.isShow = true
@@ -213,7 +213,7 @@ onMounted(() => {
           v-if="commitInfo.isShow"
           w-full absolute top-50px
           cursor-pointer hover:shadow-md
-          flex="~ col" gap-y-3px
+          flex="~ col wrap" gap-y-3px
           b="rd-6px 1px color-#d0d7de"
           p-y-8px p-x-16px
           @click="goPage"
@@ -221,13 +221,13 @@ onMounted(() => {
           <div color="#24292f" dark:color="white" font-600>
             {{ commitInfo.message }}
           </div>
-          <div text-12px flex items-center gap-x-5px>
+          <div text-12px flex="~ wrap" items-center gap-5px>
             <img w-20px h-20px b-rd="50%" :src="commitInfo.avatarUrl" alt="user">
             <div font-600>
               {{ commitInfo.author }}
             </div>
             <div color="#24292f" dark:color="white">
-              committed {{ commitInfo.date }}
+              committed on {{ commitInfo.date }}
             </div>
           </div>
         </div>
