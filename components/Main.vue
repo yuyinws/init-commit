@@ -8,7 +8,6 @@ const errorInfo = reactive({
   isShow: false,
   message: '',
 })
-const suggests = ['microsoft/vscode', 'github.com/vuejs/core', 'https://github.com/microsoft/TypeScript']
 
 function parseInput(input: string) {
   const splitArr = input.split('/')
@@ -104,8 +103,44 @@ function goPage() {
   window.open(href, '_blank')
 }
 
-function onSuggestClick(input: string) {
-  inputText.value = input
+const searchResult = reactive({
+  isShow: false,
+  data: [],
+})
+
+watchEffect(() => {
+  if (inputText.value.length === 0)
+    searchResult.isShow = false
+})
+
+const onInput = useDebounceFn((event: any) => {
+  const input = event.target.value
+  if (input)
+    searchRepo(input)
+}, 500)
+
+function searchRepo(str: string) {
+  searchResult.isShow = true
+  searchResult.data = []
+  commitInfo.isShow = false
+  $fetch(`https://api.github.com/search/repositories?q=${str}&sort=stars&order=desc&per_page=10`).then((res: any) => {
+    const items = res.items.map((i: any) => i.full_name)
+    if (items.length) {
+      searchResult.data = items
+    }
+    else {
+      searchResult.isShow = false
+      showError('Not Found')
+    }
+  }).catch(() => {
+    showError('Something Wrong:(')
+    searchResult.isShow = false
+  })
+}
+
+function onSelect(str: string) {
+  inputText.value = str
+  searchResult.isShow = false
   onSearch()
 }
 
@@ -127,12 +162,76 @@ onMounted(() => {
       </div>
     </div>
     <div flex gap-x-20px mb-10px>
-      <input
-        v-model.trim="inputText" b="rd-6px 1px solid color-#d0d7de" shadow-md w-full type="text"
-        placeholder="Input Repo's name here" px-12px py-8px
-        dark:bg="dark"
-        @keyup.enter="onSearch"
-      >
+      <div w-full relative>
+        <input
+          v-model.trim="inputText" b="rd-6px 1px solid color-#d0d7de" w-full type="text"
+          placeholder="Input Repo's name here" px-12px py-8px
+          dark:bg="#222222"
+          shadow-md
+          @input="onInput"
+          @keyup.enter="onSearch"
+        >
+        <div
+          v-if="searchResult.isShow"
+          w-full
+          top-50px
+          b="rd-2px 1px solid color-#d0d7de"
+          shadow-md
+          bg-white
+          dark:bg="#222222"
+          absolute
+          max-h-300px
+          overflow-auto
+          z-10
+        >
+          <div v-if="searchResult.data?.length === 0" color="#888" h-100px text-center leading-100px>
+            Loading...
+          </div>
+          <div v-else flex="~ col">
+            <div
+              v-for="item in searchResult.data" :key="item"
+              hover:bg="#f5f7fa"
+              dark:hover="bg-#888"
+              p-2 w-full
+              @click="onSelect(item)"
+            >
+              {{ item }}
+            </div>
+          </div>
+        </div>
+        <div
+          v-show="errorInfo.isShow"
+          absolute top-50px
+          b="rd-6px 1px color-#cf222e opacity-50"
+          color="#cf222e"
+          w-full
+          mb-10px text-center p-y-8px
+        >
+          {{ errorInfo.message }}
+        </div>
+        <div
+          v-if="commitInfo.isShow"
+          w-full absolute top-50px
+          cursor-pointer hover:shadow-md
+          flex="~ col" gap-y-3px
+          b="rd-6px 1px color-#d0d7de"
+          p-y-8px p-x-16px
+          @click="goPage"
+        >
+          <div color="#24292f" dark:color="white" font-600>
+            {{ commitInfo.message }}
+          </div>
+          <div text-12px flex items-center gap-x-5px>
+            <img w-20px h-20px b-rd="50%" :src="commitInfo.avatarUrl" alt="user">
+            <div font-600>
+              {{ commitInfo.author }}
+            </div>
+            <div color="#24292f" dark:color="white">
+              committed {{ commitInfo.date }}
+            </div>
+          </div>
+        </div>
+      </div>
       <button
         shadow-md b="rd-6px 1px solid color-#1b1f24 opacity-15" color="#ffffff" bg="#218bff" hover:bg="#2e67d3"
         relative px-20px @click="onSearch"
@@ -141,34 +240,6 @@ onMounted(() => {
       </button>
     </div>
 
-    <div text-12px flex="~ wrap" color="#999" mb-10px>
-      <div mr-5px>
-        Suggests:
-      </div>
-      <div flex="~ wrap" gap-x-10px>
-        <div v-for="(item, i) in suggests" :key="i" cursor-pointer hover:color="#555" @click="onSuggestClick(item)">
-          {{ item }}
-        </div>
-      </div>
-    </div>
-
-    <div v-show="errorInfo.isShow" b="rd-6px 1px color-#cf222e opacity-50" color="#cf222e" mb-10px text-center p-y-8px>
-      {{ errorInfo.message }}
-    </div>
-    <div v-if="commitInfo.isShow" cursor-pointer hover:shadow-md flex="~ col" gap-y-3px b="rd-6px 1px color-#d0d7de" p-y-8px p-x-16px @click="goPage">
-      <div color="#24292f" dark:color="white" font-600>
-        {{ commitInfo.message }}
-      </div>
-      <div text-12px flex items-center gap-x-5px>
-        <img w-20px h-20px b-rd="50%" :src="commitInfo.avatarUrl" alt="user">
-        <div font-600>
-          {{ commitInfo.author }}
-        </div>
-        <div color="#24292f" dark:color="white">
-          committed {{ commitInfo.date }}
-        </div>
-      </div>
-    </div>
     <div v-if="isLoading" flex justify-center items-center>
       <img w-50px h-50px src="/loading.gif" alt="">
     </div>
