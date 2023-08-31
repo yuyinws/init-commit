@@ -9,10 +9,17 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.41.0",
     "@nuxt/devtools": "latest",
+    "@nuxthq/ui": "^2.7.0",
+    "@octokit/graphql-schema": "^14.27.2",
+    "@types/lodash-es": "^4.17.9",
+    "eslint": "^8.48.0",
     "nuxt": "^3.7.0"
   },
   "dependencies": {
-    "@octokit/core": "^5.0.0"
+    "@iconify-json/mdi": "^1.1.54",
+    "@octokit/core": "^5.0.0",
+    "lodash-es": "^4.17.21"
   }
 }
