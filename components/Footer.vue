@@ -1,10 +1,11 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
-  <div flex="~ col" fixed bottom-2 text-12px w-full items-center justify-center>
-    <div flex gap-x-5px>
-      <div>Powered By</div>
-      <a color="#2e67d3" href="https://docs.github.com/en/rest">Github API</a>
-      <div>&</div>
-      <a color="#4daa9f" href="https://netlify.app/">Netlify</a>
-    </div>
+  <div class="border-t border-gray-200 dark:border-gray-800 p-3">
+    <NuxtLink target="_blank" to="https://github.com/yuyinws" class="text-sm text-gray-400 hover:text-gray-500 cursor-pointer">
+      Made with 💛
+    </NuxtLink>
   </div>
 </template>

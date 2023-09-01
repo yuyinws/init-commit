@@ -1,20 +1,63 @@
-# [Comm1t](https://comm1t.yuy1n.io)
+# Nuxt 3 Minimal Starter
 
-## Repo Search
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-![image-20220924231542502](https://cdn.jsdelivr.net/gh/yuyinws/static@master/2022/09/upgit_20220924_1664032546.png)
+## Setup
 
-## First Commit
+Make sure to install the dependencies:
 
-![image-20220924231515126](https://cdn.jsdelivr.net/gh/yuyinws/static@master/2022/09/upgit_20220924_1664032515.png)
+```bash
+# npm
+npm install
 
-# Introduce
-There are lots of great open source projects on Github, Some times we want to see the begining of these project. 
+# pnpm
+pnpm install
 
-Since these projects usually have thousands of commit, So I made this tool to find the first commit quickly.
+# yarn
+yarn install
+```
 
-# Usage
-1. Open [comm1t.yuy1n.io](https://comm1t.yuy1n.io)
-2. Input the repo's info
-3. Click `Search` Button
-4. Or just add repo's info after url, like this: [comm1t.yuy1n.io/microsoft/vscode](https://comm1t.yuy1n.io/microsoft/vscode)
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

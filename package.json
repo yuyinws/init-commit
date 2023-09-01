@@ -1,28 +1,26 @@
 {
+  "name": "nuxt-app",
   "private": true,
-  "packageManager": "pnpm@7.9.0",
   "scripts": {
-    "build": "nuxi build",
-    "dev": "nuxi dev",
-    "start": "node .output/server/index.mjs",
-    "lint": "eslint .",
-    "postinstall": "nuxi prepare",
-    "generate": "nuxi generate"
-  },
-  "dependencies": {
-    "@vueuse/core": "^9.2.0"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.26.2",
-    "@iconify-json/carbon": "^1.1.7",
-    "@iconify-json/twemoji": "^1.1.5",
-    "@nuxtjs/color-mode": "^3.1.4",
-    "@octokit/core": "^4.0.5",
-    "@unocss/nuxt": "^0.45.13",
-    "@vueuse/nuxt": "^9.1.1",
-    "dayjs": "^1.11.5",
-    "eslint": "^8.23.0",
-    "nuxt": "^3.0.0-rc.8",
-    "typescript": "^4.8.2"
+    "@antfu/eslint-config": "^0.41.0",
+    "@nuxt/devtools": "latest",
+    "@nuxthq/ui": "^2.7.0",
+    "@octokit/graphql-schema": "^14.27.2",
+    "@types/lodash-es": "^4.17.9",
+    "eslint": "^8.48.0",
+    "nuxt": "^3.7.0"
+  },
+  "dependencies": {
+    "@iconify-json/mdi": "^1.1.54",
+    "@octokit/core": "^5.0.0",
+    "dayjs": "^1.11.9",
+    "lodash-es": "^4.17.21"
   }
 }
