@@ -20,6 +20,7 @@
   "dependencies": {
     "@iconify-json/mdi": "^1.1.54",
     "@octokit/core": "^5.0.0",
+    "dayjs": "^1.11.9",
     "lodash-es": "^4.17.21"
   }
 }

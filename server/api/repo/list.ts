@@ -1,31 +1,8 @@
 import { env } from 'node:process'
+import { SearchRepositoriesQuery } from '~/server/gql'
+import type { Repository, Response } from '~/types'
 
-const searchQuery = `#graphql
-query SearchRepositories($query: String!) {
-  search(query: $query, type: REPOSITORY, first: 10) {
-      nodes {
-        ... on Repository {
-          owner {
-            avatarUrl
-            login
-          }
-          name
-          url
-          createdAt
-          description
-        }
-      }
-  }
-}
-`
-
-interface Response {
-  state: 'ok' | 'error'
-  data?: Repository[]
-  error?: any
-}
-
-export default defineEventHandler(async (event): Promise<Response> => {
+export default defineEventHandler(async (event): Promise<Response<Repository[]>> => {
   try {
     const { query } = getQuery(event)
     if (!query) {
@@ -34,22 +11,18 @@ export default defineEventHandler(async (event): Promise<Response> => {
         data: [],
       }
     }
-    const rawResponse = await fetch('https://api.github.com/graphql', {
+    const response = await $fetch<any>('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
       },
       body: JSON.stringify({
-        query: searchQuery,
+        query: SearchRepositoriesQuery,
         variables: {
           query,
         },
       }),
     })
-
-    const response = await rawResponse.json()
 
     return {
       state: 'ok',
@@ -59,7 +32,7 @@ export default defineEventHandler(async (event): Promise<Response> => {
   catch (error) {
     return {
       state: 'error',
-      error,
+      error: String(error),
     }
   }
 })
