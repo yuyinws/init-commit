@@ -18,3 +18,8 @@ export interface Commit {
   message: string
   oid: string
 }
+
+export interface Refs {
+  defaultRef: string
+  refs: string[]
+}

@@ -8,6 +8,12 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "dependencies": {
+    "@iconify-json/mdi": "^1.1.54",
+    "@octokit/core": "^5.0.0",
+    "dayjs": "^1.11.9",
+    "lodash-es": "^4.17.21"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
     "@nuxt/devtools": "latest",
@@ -16,11 +22,5 @@
     "@types/lodash-es": "^4.17.9",
     "eslint": "^8.48.0",
     "nuxt": "^3.7.0"
-  },
-  "dependencies": {
-    "@iconify-json/mdi": "^1.1.54",
-    "@octokit/core": "^5.0.0",
-    "dayjs": "^1.11.9",
-    "lodash-es": "^4.17.21"
   }
 }

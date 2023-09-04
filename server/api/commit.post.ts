@@ -1,28 +1,12 @@
 import { env } from 'node:process'
-import { defaultRefQuery, initalCommitQuery, totalCommitQuery } from '~/server/gql'
+import { initalCommitQuery, totalCommitQuery } from '~/server/gql'
 import type { Commit, Response } from '~/types'
 
 export default defineEventHandler(async (event): Promise<Response<Commit>> => {
   try {
-    const { owner, name } = await readBody(event)
+    const { owner, name, ref } = await readBody(event)
 
-    const response = await $fetch<any>('https://api.github.com/graphql', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-      },
-      body: JSON.stringify({
-        query: defaultRefQuery,
-        variables: {
-          name,
-          owner,
-        },
-      }),
-    })
-
-    const defaultRef: string = response.data.repository.defaultBranchRef.name
-
-    if (!defaultRef)
+    if (!ref || !name || !owner)
       throw new Error('No default branch found')
 
     const totalCommitResponse = await $fetch<any>('https://api.github.com/graphql', {
@@ -35,7 +19,7 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
         variables: {
           name,
           owner,
-          ref: defaultRef,
+          ref,
         },
       }),
     })
@@ -55,7 +39,7 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
         variables: {
           name,
           owner,
-          ref: defaultRef,
+          ref,
           after,
         },
       }),
@@ -67,8 +51,7 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
     }
   }
   catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error)
+    console.error(error)
     return {
       state: 'error',
       error: String(error),
