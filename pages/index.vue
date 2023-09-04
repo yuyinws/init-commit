@@ -155,7 +155,7 @@ async function getInitialCommit() {
               default
             </UBadge>
           </div>
-          <div class="w-full border-b my-2 border-gray-200" />
+          <div class="w-full border-b my-2 border-gray-200 dark:border-gray-700" />
 
           <div v-if="isCommitLoading">
             <USkeleton class="h-5 w-[17rem]" />
