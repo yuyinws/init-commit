@@ -1,63 +1,18 @@
-# Nuxt 3 Minimal Starter
+## Comm1t
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+**[Comm1t](https://comm1t.yuy1n.io)** is a web app that can help you find the initial commit of a repository.
 
-## Setup
 
-Make sure to install the dependencies:
 
-```bash
-# npm
-npm install
+## Features
 
-# pnpm
-pnpm install
+- Search any GitHub repository by keyword.
+- Support querying first commit with  specified branch.
 
-# yarn
-yarn install
-```
 
-## Development Server
 
-Start the development server on `http://localhost:3000`:
+## ScreenShot
 
-```bash
-# npm
-npm run dev
+![CleanShot 2023-09-04 at 11.05.51](https://cdn.jsdelivr.net/gh/yuyinws/static@master/2023/09/upgit_20230904_1693796836.png)
 
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+![CleanShot 2023-09-04 at 11.15.34](https://cdn.jsdelivr.net/gh/yuyinws/static@master/2023/09/upgit_20230904_1693797369.png)
