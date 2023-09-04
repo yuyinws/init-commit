@@ -3,58 +3,103 @@ import { debounce } from 'lodash-es'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import type { Commit, Repository } from '~/types'
+import Repositories from '~/components/Repositories.vue'
 
 dayjs.extend(relativeTime)
 
+const toast = useToast()
+
 const inputVal = ref('')
-const isLoading = ref(false)
 const isCommitLoading = ref(false)
-const isRepoCardShow = ref(false)
+const isBranchsLoading = ref(false)
 const selectedRepo = ref<Repository>()
-const repositories = ref<Repository[]>([])
+
+const RepositoriesRef = ref<InstanceType<typeof Repositories>>()
 
 const initialCommit = ref<Commit>()
 
-const onInputValUpdate = debounce(async (event) => {
+const branchs = ref<string[]>()
+const selectedBranch = ref<string>()
+const defaultBranch = ref('')
+
+const onInputValUpdate = debounce(async (event: string) => {
   try {
     if (!event)
       return
 
     selectedRepo.value = undefined
-    isRepoCardShow.value = false
-    repositories.value = []
-    isLoading.value = true
-    isRepoCardShow.value = true
-    const response = await $fetch(`/api/repo/list?query=${event}`)
-    if (response.state === 'ok')
-      repositories.value = response.data!
+    RepositoriesRef.value?.getRepoList(event)
   }
   catch (error) {
-
-  }
-  finally {
-    isLoading.value = false
+    toast.add({ title: 'Error', description: String(error) })
   }
 }, 500)
 
-async function handleRepoClick(repo: Repository) {
+async function getBranchAndCommit(repo: Repository) {
   try {
-    isRepoCardShow.value = false
     selectedRepo.value = repo
     isCommitLoading.value = true
     inputVal.value = `${repo.owner.login}/${repo.name}`
+
+    await getBranchs()
+    await getInitialCommit()
+  }
+  catch (error) {
+    toast.add({
+      title: 'Error',
+      description: String(error),
+    })
+  }
+  finally {
+    isCommitLoading.value = false
+  }
+}
+
+async function getBranchs() {
+  try {
+    isBranchsLoading.value = true
+    const refResponse = await $fetch('/api/refs', {
+      method: 'POST',
+      body: {
+        owner: selectedRepo.value?.owner.login,
+        name: selectedRepo.value?.name,
+      },
+    })
+
+    branchs.value = refResponse.data!.refs
+    selectedBranch.value = refResponse.data!.defaultRef
+    defaultBranch.value = refResponse.data!.defaultRef
+  }
+  catch (error) {
+    toast.add({
+      title: 'Error',
+      description: String(error),
+    })
+  }
+  finally {
+    isBranchsLoading.value = false
+  }
+}
+
+async function getInitialCommit() {
+  try {
+    isCommitLoading.value = true
     const response = await $fetch('/api/commit', {
       method: 'POST',
       body: {
-        owner: repo.owner.login,
-        name: repo.name,
+        owner: selectedRepo.value?.owner.login,
+        name: selectedRepo.value?.name,
+        ref: selectedBranch.value,
       },
     })
 
     initialCommit.value = response.data
   }
   catch (error) {
-
+    toast.add({
+      title: 'Error',
+      description: String(error),
+    })
   }
   finally {
     isCommitLoading.value = false
@@ -75,12 +120,12 @@ async function handleRepoClick(repo: Repository) {
         Find the <span class="font-semibold">initial commit</span> of a repository.
       </h2>
     </div>
-    <div class="flex w-full gap-2 justify-center mt-10">
-      <div class="relative">
+    <div class="flex w-[21rem] sm:w-[40rem] gap-2 justify-center mt-10">
+      <div class="relative w-full">
         <UInput
           v-model="inputVal"
           placeholder="Input to search a repository"
-          size="lg" class="w-[20rem] sm:w-[40rem]"
+          size="lg" class="w-full"
           :ui="{ icon: { trailing: { pointer: '' } } }"
           @update:model-value="onInputValUpdate"
         >
@@ -95,47 +140,30 @@ async function handleRepoClick(repo: Repository) {
             />
           </template>
         </UInput>
-        <div v-if="isRepoCardShow" class="bg-white dark:bg-gray-900 absolute rounded-md top-12 shadow-sm p-2 w-[20rem] sm:w-[40rem] border border-gray-300 dark:border-gray-700">
-          <div v-if="isLoading" class="w-full flex flex-col justify-center h-20 items-center">
-            <UIcon name="i-mdi-loading" class="text-gray-500 dark:text-gray-400 animate-spin h-8 w-8" />
-            <div class="text-sm text-gray-500 mt-2">
-              fetching repositories...
+        <Repositories ref="RepositoriesRef" @repoClick="getBranchAndCommit" />
+
+        <div v-if="selectedRepo" class="bg-white dark:bg-gray-900 absolute rounded-md top-12 shadow-sm p-3 w-[21rem] sm:w-[40rem] border border-gray-300 dark:border-gray-700">
+          <div v-if="isBranchsLoading">
+            <USkeleton class="h-8 w-[15rem]" />
+          </div>
+          <div v-else class="max-w-[20rem] min-w-[15rem] flex items-center gap-2">
+            <UIcon class="flex-shrink-0" name="i-mdi-source-branch" />
+            <div class="flex-1">
+              <USelectMenu v-model="selectedBranch" :options="branchs" searchable @update:model-value="getInitialCommit" />
+            </div>
+            <UBadge v-if="defaultBranch === selectedBranch">
+              default
+            </UBadge>
+          </div>
+          <div class="w-full border-b my-2 border-gray-200" />
+
+          <div v-if="isCommitLoading">
+            <USkeleton class="h-5 w-[17rem]" />
+            <div class="flex items-center gap-2 mt-2">
+              <USkeleton class="h-6 w-6" :ui="{ rounded: 'rounded-full' }" />
+              <USkeleton class="h-5 w-[15rem]" />
             </div>
           </div>
-          <div v-else class="flex flex-col justify-center">
-            <template v-if="repositories?.length > 0">
-              <div
-                v-for="repo in repositories"
-                :key="repo.owner.login + repo.name"
-                class="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm p-2 cursor-pointer"
-                @click="handleRepoClick(repo)"
-              >
-                <div class="flex gap-2">
-                  <UAvatar size="xs" :src="repo.owner.avatarUrl" :alt="repo.owner.login" />
-                  <div class="text-sm">
-                    <span class="font-medium">{{ repo.owner.login }}</span>
-                    <span class="mx-1">/</span>
-                    <span class="font-medium">{{ repo.name }}</span>
-                  </div>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              <div class="text-sm text-gray-500 text-center py-6">
-                No repositories found
-              </div>
-            </template>
-          </div>
-        </div>
-
-        <div v-if="selectedRepo" class="bg-white dark:bg-gray-900 absolute rounded-md top-12 shadow-sm p-3 w-[20rem] sm:w-[40rem] border border-gray-300 dark:border-gray-700">
-          <div v-if="isCommitLoading" class="w-full flex flex-col justify-center h-20 items-center">
-            <UIcon name="i-mdi-loading" class="text-gray-500 dark:text-gray-400 animate-spin h-8 w-8" />
-            <div class="text-sm text-gray-500 mt-2">
-              fetching initial commit...
-            </div>
-          </div>
-
           <template v-else>
             <NuxtLink
               target="_blank"
@@ -146,7 +174,6 @@ async function handleRepoClick(repo: Repository) {
                 {{ initialCommit?.message }}
               </div>
             </NuxtLink>
-
             <div class="flex text-sm items-center gap-2 mt-1">
               <UAvatar size="xs" :src="initialCommit?.author.avatarUrl" />
               <NuxtLink

@@ -17,9 +17,14 @@ query SearchRepositories($query: String!) {
 }
 `
 
-export const defaultRefQuery = `#graphql
+export const refQuery = `#graphql
 query defaultRefQuery($name:String!,$owner:String!) {
   repository(name: $name, owner: $owner) {
+    refs(refPrefix: "refs/heads/",first: 100) {
+      nodes {
+        name
+      }
+    }
     defaultBranchRef {
       name
     }
