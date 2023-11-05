@@ -67,6 +67,9 @@ query initalCommitQuery($name:String!,$owner:String!,$ref:String!,$after:String)
                 email
                 name
                 avatarUrl
+                user {
+                  login
+                }
               }
             }
           }

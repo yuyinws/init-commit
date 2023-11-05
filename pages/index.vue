@@ -179,7 +179,7 @@ async function getInitialCommit() {
               <NuxtLink
                 target="_blank"
                 class="hover:underline hover:text-blue-500"
-                :to="`https://github.com/${selectedRepo.owner.login}`"
+                :to="`https://github.com/${initialCommit?.author?.user?.login}`"
               >
                 <div class="font-medium">
                   {{ initialCommit?.author.name }}
