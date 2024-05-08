@@ -1,5 +1,6 @@
 {
   "name": "nuxt-app",
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -9,18 +10,21 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@iconify-json/mdi": "^1.1.54",
-    "@octokit/core": "^5.0.0",
-    "dayjs": "^1.11.9",
+    "@iconify-json/mdi": "^1.1.66",
+    "@octokit/core": "^6.1.2",
+    "dayjs": "^1.11.10",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.41.0",
+    "@antfu/eslint-config": "^2.15.0",
     "@nuxt/devtools": "latest",
-    "@nuxthq/ui": "^2.7.0",
-    "@octokit/graphql-schema": "^14.27.2",
-    "@types/lodash-es": "^4.17.9",
-    "eslint": "^8.48.0",
-    "nuxt": "^3.7.0"
+    "@nuxt/ui": "^2.15.2",
+    "@octokit/graphql-schema": "^15.12.0",
+    "@types/lodash-es": "^4.17.12",
+    "@vueuse/core": "^10.9.0",
+    "@vueuse/nuxt": "^10.9.0",
+    "@vueuse/router": "^10.9.0",
+    "eslint": "^9.1.1",
+    "nuxt": "^3.11.2"
   }
 }

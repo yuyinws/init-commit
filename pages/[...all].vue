@@ -2,6 +2,7 @@
 import { debounce } from 'lodash-es'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useRouteParams } from '@vueuse/router'
 import type { Commit, Repository } from '~/types'
 import Repositories from '~/components/Repositories.vue'
 
@@ -22,6 +23,8 @@ const branchs = ref<string[]>()
 const selectedBranch = ref<string>()
 const defaultBranch = ref('')
 
+const routeParams = useRouteParams('all')
+
 const onInputValUpdate = debounce(async (event: string) => {
   try {
     if (!event)
@@ -40,9 +43,9 @@ async function getBranchAndCommit(repo: Repository) {
     selectedRepo.value = repo
     isCommitLoading.value = true
     inputVal.value = `${repo.owner.login}/${repo.name}`
-
     await getBranchs()
     await getInitialCommit()
+    routeParams.value = [repo.owner.login, repo.name]
   }
   catch (error) {
     toast.add({
@@ -140,7 +143,7 @@ async function getInitialCommit() {
             />
           </template>
         </UInput>
-        <Repositories ref="RepositoriesRef" @repoClick="getBranchAndCommit" />
+        <Repositories ref="RepositoriesRef" @repo-click="getBranchAndCommit" />
 
         <div v-if="selectedRepo" class="bg-white dark:bg-gray-900 absolute rounded-md top-12 shadow-sm p-3 w-[21rem] sm:w-[40rem] border border-gray-300 dark:border-gray-700">
           <div v-if="isBranchsLoading">
