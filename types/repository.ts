@@ -10,13 +10,19 @@ export interface Repository {
 }
 
 export interface Commit {
-  author: {
-    avatarUrl: string
-    name: string
+  commit: {
+    author: {
+      avatarUrl: string
+      name: string
+    }
+    committedDate: string
+    changedFilesIfAvailable: number
+    abbreviatedOid: string
+    additions: number
+    message: string
+    oid: string
   }
-  committedDate: string
-  message: string
-  oid: string
+  branchs: Refs
 }
 
 export interface Refs {

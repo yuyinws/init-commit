@@ -61,8 +61,12 @@ query initalCommitQuery($name:String!,$owner:String!,$ref:String!,$after:String)
             nodes {
               message
               committedDate
+              abbreviatedOid
               authoredDate
               oid
+              deletions
+              changedFilesIfAvailable
+              additions
               author {
                 email
                 name

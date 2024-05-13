@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { Repository } from '~/types'
 
-const emits = defineEmits(['repoClick'])
-
 const toast = useToast()
 
 const repositories = ref<Repository[]>([])
@@ -28,8 +26,7 @@ async function getRepoList(query: string) {
 
 function handleRepoClick(repo: Repository) {
   isRepoCardShow.value = false
-
-  emits('repoClick', repo)
+  navigateTo(`/${repo.owner.login}/${repo.name}`)
 }
 
 defineExpose({
@@ -38,8 +35,8 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="isRepoCardShow" class="bg-white dark:bg-gray-900 absolute rounded-md top-12 shadow-sm p-2 w-[21rem] sm:w-[40rem] border border-gray-300 dark:border-gray-700">
-    <div v-if="isLoading" class="w-full flex flex-col justify-center items-center">
+  <div v-if="isRepoCardShow" class="bg-white dark:bg-gray-900 absolute rounded-md top-[18rem] shadow-sm p-2 w-80 border border-gray-300 dark:border-gray-700">
+    <div v-if="isLoading" class="w-70 flex flex-col justify-center items-center">
       <div class="flex flex-col w-full gap-4 p-2">
         <div v-for="i in 10" :key="i" class="flex items-center gap-2 w-full">
           <USkeleton class="h-6 w-6" :ui="{ rounded: 'rounded-full' }" />
@@ -57,8 +54,8 @@ defineExpose({
         >
           <div class="flex gap-2">
             <UAvatar size="xs" :src="repo.owner.avatarUrl" :alt="repo.owner.login" />
-            <div class="text-sm">
-              <span class="font-medium">{{ repo.owner.login }}</span>
+            <div class="text-sm truncate">
+              <span>{{ repo.owner.login }}</span>
               <span class="mx-1">/</span>
               <span class="font-medium">{{ repo.name }}</span>
             </div>
