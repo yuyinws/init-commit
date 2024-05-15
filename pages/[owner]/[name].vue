@@ -2,6 +2,18 @@
 const route = useRoute()
 const { owner, name } = route.params
 
+useSeoMeta({
+  title: `init-commit.info - @${owner}/${name}`,
+})
+
+useServerSeoMeta({
+  ogTitle: `init-commit.info - @${owner}/${name}`,
+  twitterTitle: `init-commit.info - @${owner}/${name}`,
+  description: `The first commit of ${owner}/${name} on GitHub`,
+  ogDescription: `The first commit of ${owner}/${name} on GitHub`,
+  twitterCard: 'summary_large_image',
+})
+
 const { data } = useFetch('/api/commit', {
   method: 'POST',
   body: {
