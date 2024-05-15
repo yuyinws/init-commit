@@ -1,7 +1,8 @@
 {
-  "name": "nuxt-app",
+  "name": "init-commit",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

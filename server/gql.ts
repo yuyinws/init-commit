@@ -80,3 +80,14 @@ query initalCommitQuery($name:String!,$owner:String!,$ref:String!,$after:String)
   }
 }
 `
+
+export const repoInfoQuery = `#graphql
+query ($name:String!,$owner:String!) {
+  repository(name: $name, owner: $owner) {
+    owner {
+      login
+      avatarUrl
+    }
+  }
+}
+`

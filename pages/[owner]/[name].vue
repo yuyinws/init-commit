@@ -1,98 +1,6 @@
 <script setup lang="ts">
-import type { Commit, Repository } from '~/types'
-
 const route = useRoute()
 const { owner, name } = route.params
-
-// const isCommitLoading = ref(false)
-// const isBranchsLoading = ref(false)
-
-// const branchs = ref<string[]>()
-// const selectedBranch = ref<string>()
-// const defaultBranch = ref('')
-// const initialCommit = ref<Commit>()
-// async function getBranchs() {
-//   try {
-//     isBranchsLoading.value = true
-
-//     const refResponse = await $fetch('/api/refs', {
-//       method: 'POST',
-//       body: {
-//         owner,
-//         name,
-//       },
-//     })
-
-//     branchs.value = refResponse.data!.refs
-//     selectedBranch.value = refResponse.data!.defaultRef
-//     defaultBranch.value = refResponse.data!.defaultRef
-//   }
-//   catch (error) {
-//     toast.add({
-//       title: 'Error',
-//       description: String(error),
-//     })
-//   }
-//   finally {
-//     isBranchsLoading.value = false
-//   }
-// }
-
-// async function getInitialCommit() {
-//   try {
-//     isCommitLoading.value = true
-//     const response = await $fetch('/api/commit', {
-//       method: 'POST',
-//       body: {
-//         owner,
-//         name,
-//         ref: selectedBranch.value,
-//       },
-//     })
-
-//     initialCommit.value = response.data
-//   }
-//   catch (error) {
-//     toast.add({
-//       title: 'Error',
-//       description: String(error),
-//     })
-//   }
-//   finally {
-//     isCommitLoading.value = false
-//   }
-// }
-
-// onMounted(async () => {
-//   await getBranchs()
-//   await getInitialCommit()
-// })
-
-// const { data } = await useAsyncData('test', async () => {
-//   const [branchs, commit] = await Promise.all([
-//     $fetch('/api/refs', {
-//       method: 'POST',
-//       body: {
-//         owner,
-//         name,
-//       },
-//     }),
-
-//     $fetch('/api/commit', {
-//       method: 'POST',
-//       body: {
-//         owner,
-//         name,
-//         ref: 'master',
-//       },
-//     }),
-//   ])
-
-//   return {
-//     branchs,
-//     commit,
-//   }
-// })
 
 const { data } = useFetch('/api/commit', {
   method: 'POST',
@@ -102,52 +10,81 @@ const { data } = useFetch('/api/commit', {
   },
 })
 
+const { data: repoInfo } = useFetch('/api/repo/info', {
+  params: {
+    owner,
+    name,
+  },
+})
+
 const commitMeta = computed(() => {
   return data.value?.data?.commit
+})
+
+const defaultBranch = computed(() => {
+  return data.value?.data?.branchs.defaultRef
+})
+
+const avatarUrl = computed(() => {
+  return repoInfo.value?.data?.ownerAvatarUrl
 })
 
 defineOgImageComponent(
   'Commit',
   {
-    data: data as any,
+    commitMeta,
+    avatarUrl,
+    owner,
+    name,
+    defaultBranch,
   },
 )
 </script>
 
 <template>
   <div>
-    <div v-if="commitMeta" class="flex flex-col items-center">
+    <div v-if="commitMeta" class="flex flex-col items-center p-5">
       <nuxt-link
         :to="`https://github.com/${owner}/${name}/commit/${commitMeta.oid}`"
         target="_blank"
+        class="mt-80"
       >
-        <UCard class="w-[500px] mt-80">
+        <UCard class="max-w-[500px]">
           <div class="flex">
             <div>
-              <div class="flex items-center gap-2 text-sm">
-                <div class="text-gray-500">
+              <div class="flex items-center gap-1 text-sm">
+                <div class="text-gray-800 font-medium">
                   {{ `${owner}/${name}` }}
                 </div>
-                <div class="flex items-center font-bold">
+              </div>
+
+              <div class="font-semibold text-2xl">
+                {{ commitMeta.message }}
+              </div>
+
+              <div class="flex items-center gap-2 text-xs mt-1">
+                <div class="flex items-center">
                   <UIcon name="i-ion:git-branch" class="text-gray-500" />
                   <div class="text-gray-500">
                     {{ data?.data?.branchs.defaultRef }}
                   </div>
                 </div>
+                <div class="flex items-center gap-1 ">
+                  <UIcon name="i-radix-icons-commit" class="text-gray-500" />
+                  <div class="text-gray-500">
+                    {{ commitMeta.abbreviatedOid }}
+                  </div>
+                </div>
               </div>
 
-              <div class="font-semibold text-2xl mt-1">
-                {{ commitMeta.message }}
-              </div>
-
-              <div class="flex gap-3 text-[13px]">
-                <div class="flex items-center mt-2 gap-3">
+              <div class="flex gap-3 text-[13px] mt-2">
+                <div class="flex items-center gap-3">
                   <div class="text-gray-500 flex items-center gap-1">
                     <UIcon name="i-radix-icons-file" />
                     {{ formatNumber(commitMeta.changedFilesIfAvailable) }} files changed
                   </div>
                 </div>
-                <div class="flex items-center mt-2 gap-3">
+                <div class="flex items-center gap-3">
                   <div class="text-gray-500 flex items-center gap-1">
                     <UIcon name="i-radix-icons-file-plus" />
                     {{ formatNumber(commitMeta.additions) }} lines additions
@@ -155,7 +92,7 @@ defineOgImageComponent(
                 </div>
               </div>
 
-              <div class="flex items-center text-sm gap-1 mt-10">
+              <div class="flex flex-wrap items-center text-sm gap-1 mt-10">
                 <img class="w-5 h-5 rounded-full" :src="commitMeta.author.avatarUrl" alt="">
                 <div class="font-medium">
                   {{ commitMeta.author.name }}
@@ -171,19 +108,10 @@ defineOgImageComponent(
                     locale="en-US"
                   />
                 </div>
-                <UIcon name="i-radix-icons-commit" class="text-gray-500" />
-                <div class="text-gray-500">
-                  {{ commitMeta.abbreviatedOid }}
-                </div>
               </div>
             </div>
-            <div class="flex font-semibold text-gray-400 gap-1">
-              <div class="text-xl">
-                #
-              </div>
-              <div class="text-3xl">
-                1
-              </div>
+            <div class="flex flex-shrink-0 font-semibold text-gray-400 gap-1">
+              <img class="w-20 h-20 rounded-xl" :src="repoInfo?.data?.ownerAvatarUrl" alt="">
             </div>
           </div>
         </UCard>
