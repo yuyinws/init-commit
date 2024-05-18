@@ -61,8 +61,12 @@ query initalCommitQuery($name:String!,$owner:String!,$ref:String!,$after:String)
             nodes {
               message
               committedDate
+              abbreviatedOid
               authoredDate
               oid
+              deletions
+              changedFilesIfAvailable
+              additions
               author {
                 email
                 name
@@ -75,6 +79,17 @@ query initalCommitQuery($name:String!,$owner:String!,$ref:String!,$after:String)
           }
         }
       }
+    }
+  }
+}
+`
+
+export const repoInfoQuery = `#graphql
+query ($name:String!,$owner:String!) {
+  repository(name: $name, owner: $owner) {
+    owner {
+      login
+      avatarUrl
     }
   }
 }

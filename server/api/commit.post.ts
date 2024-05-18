@@ -1,13 +1,26 @@
 import { env } from 'node:process'
 import { initalCommitQuery, totalCommitQuery } from '~/server/gql'
-import type { Commit, Response } from '~/types'
+import type { Commit, Refs, Response } from '~/types'
 
 export default defineEventHandler(async (event): Promise<Response<Commit>> => {
   try {
-    const { owner, name, ref } = await readBody(event)
+    const { owner, name } = await readBody(event)
 
-    if (!ref || !name || !owner)
+    if (!name || !owner)
       throw new Error('No default branch found')
+
+    const branchsResponse = await $fetch<Response<Refs>>('/api/refs', {
+      method: 'POST',
+      body: {
+        owner,
+        name,
+      },
+    })
+
+    if (branchsResponse.state !== 'ok')
+      throw new Error('No branch found')
+
+    const defaultBranch = branchsResponse.data!.defaultRef
 
     const totalCommitResponse = await $fetch<any>('https://api.github.com/graphql', {
       method: 'POST',
@@ -19,7 +32,7 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
         variables: {
           name,
           owner,
-          ref,
+          ref: defaultBranch,
         },
       }),
     })
@@ -39,7 +52,7 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
         variables: {
           name,
           owner,
-          ref,
+          ref: defaultBranch,
           after,
         },
       }),
@@ -47,14 +60,14 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
 
     return {
       state: 'ok',
-      data: initalCommitResponse.data.repository.ref.target.history.nodes[0],
+      data: {
+        commit: initalCommitResponse.data.repository.ref.target.history.nodes[0],
+        branchs: branchsResponse.data!,
+      },
     }
   }
   catch (error) {
     console.error(error)
-    return {
-      state: 'error',
-      error: String(error),
-    }
+    throw error
   }
 })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-  title: 'Comm1t',
+  title: 'Init Commit',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
   ],
@@ -10,16 +10,17 @@ useHead({
 })
 
 useSeoMeta({
-  title: 'Comm1t',
-  ogTitle: 'Comm1t',
+  title: 'Init Commit',
+  ogTitle: 'Init Commit',
   description: 'Find the initial commit of a repository.',
   ogDescription: 'Find the initial commit of a repository.',
 })
 </script>
 
 <template>
-  <NuxtLayout>
+  <UNotifications />
+  <main class="min-h-screen">
+    <app-header />
     <NuxtPage />
-    <UNotifications />
-  </NuxtLayout>
+  </main>
 </template>
