@@ -5,7 +5,7 @@ const toast = useToast()
 
 const repositories = ref<Repository[]>([])
 
-const isRepoCardShow = ref(false)
+const isRepoCardShow = defineModel('show')
 const isLoading = ref(false)
 
 async function getRepoList(query: string) {

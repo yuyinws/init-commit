@@ -8,10 +8,20 @@ const RepositoriesRef = ref<InstanceType<typeof Repositories>>()
 
 const selectedRepo = ref<Repository>()
 
+defineOgImageComponent('NuxtSeo')
+
+const selectedRepoShow = ref(false)
+const inputRef = ref()
+onClickOutside(inputRef, () => {
+  selectedRepoShow.value = false
+})
+
 const onInputValUpdate = useDebounceFn(async (event: string) => {
   try {
-    if (!event)
+    if (!event) {
+      selectedRepoShow.value = false
       return
+    }
 
     selectedRepo.value = undefined
     RepositoriesRef.value?.getRepoList(event)
@@ -20,29 +30,27 @@ const onInputValUpdate = useDebounceFn(async (event: string) => {
     toast.add({ title: 'Error', description: String(error) })
   }
 }, 500)
-
-defineOgImageComponent('NuxtSeo')
 </script>
 
 <template>
-  <div class="flex mt-[15rem] justify-center flex-col items-center">
+  <div class="flex mt-[10rem] justify-center flex-col items-center">
     <div class="text-5xl font-bold">
       Init Commit
     </div>
-    <div class="text-lg mt-5 mb-10 text-gray-600 dark:text-gray-300">
+    <div class="text-lg mt-2 mb-5 text-gray-600 dark:text-gray-300">
       Find a repository's first commit
     </div>
-    <div class="relative">
+    <div ref="inputRef" class="relative">
       <UInput
         v-model="inputContent"
-        class="w-[25rem]"
+        class="w-[28rem]"
         autofocus
         placeholder="Search for a repo..."
         size="xl"
         @update:model-value="onInputValUpdate"
       />
 
-      <Repositories ref="RepositoriesRef" @repo-click="() => {}" />
+      <Repositories ref="RepositoriesRef" v-model:show="selectedRepoShow" />
     </div>
   </div>
 </template>
