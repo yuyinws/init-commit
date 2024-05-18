@@ -34,21 +34,28 @@ const onInputValUpdate = useDebounceFn(async (event: string) => {
 
 <template>
   <div class="flex mt-[10rem] justify-center flex-col items-center">
-    <div class="text-5xl font-bold">
+    <h1 class="text-5xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
       Init Commit
-    </div>
-    <div class="text-lg mt-2 mb-5 text-gray-600 dark:text-gray-300">
+    </h1>
+    <p class="mt-6 text-lg tracking-tight text-gray-600 dark:text-gray-300">
       Find a repository's first commit
-    </div>
-    <div ref="inputRef" class="relative">
+    </p>
+    <div ref="inputRef" class="relative mt-5">
       <UInput
         v-model="inputContent"
+        icon="i-radix-icons-github-logo"
         class="w-[28rem]"
+        variant="outline"
+        color="gray"
         autofocus
-        placeholder="Search for a repo..."
+        placeholder="Search a GitHub repository …"
         size="xl"
         @update:model-value="onInputValUpdate"
-      />
+      >
+        <template #trailing>
+          <UIcon name="i-radix-icons-magnifying-glass" />
+        </template>
+      </UInput>
 
       <Repositories ref="RepositoriesRef" v-model:show="selectedRepoShow" />
     </div>

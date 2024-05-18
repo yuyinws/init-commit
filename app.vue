@@ -20,10 +20,7 @@ useSeoMeta({
 <template>
   <UNotifications />
   <main class="min-h-screen">
-    <div class="flex justify-end p-5">
-      <ColorToggle />
-    </div>
+    <app-header />
     <NuxtPage />
   </main>
-  <Footer />
 </template>
