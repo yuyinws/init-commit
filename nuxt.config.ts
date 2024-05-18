@@ -10,7 +10,11 @@ export default defineNuxtConfig({
     'unplugin-turbo-console/nuxt',
     'nuxt-og-image',
     'nuxt-time',
+    'nuxt-module-cli-shortcuts',
   ],
+  shortcuts: {
+    rawMode: true,
+  },
   runtimeConfig: {
     url: 'http://localhost:3000',
     github: {

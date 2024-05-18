@@ -25,15 +25,23 @@ defineOgImageComponent('NuxtSeo')
 </script>
 
 <template>
-  <div class="flex justify-center relative">
-    <UInput
-      v-model="inputContent"
-      class="w-80 mt-[15rem]"
-      placeholder="Search for a repo..."
-      size="xl"
-      @update:model-value="onInputValUpdate"
-    />
+  <div class="flex mt-[15rem] justify-center flex-col items-center">
+    <div class="text-5xl font-bold">
+      Init Commit
+    </div>
+    <div class="text-lg mt-5 mb-10 text-gray-600 dark:text-gray-300">
+      Find a repository's first commit
+    </div>
+    <div class="relative">
+      <UInput
+        v-model="inputContent"
+        class="w-[25rem]"
+        placeholder="Search for a repo..."
+        size="xl"
+        @update:model-value="onInputValUpdate"
+      />
 
-    <Repositories ref="RepositoriesRef" @repo-click="() => {}" />
+      <Repositories ref="RepositoriesRef" @repo-click="() => {}" />
+    </div>
   </div>
 </template>

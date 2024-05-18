@@ -35,7 +35,7 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="isRepoCardShow" class="bg-white dark:bg-gray-900 absolute rounded-md top-[18rem] shadow-sm p-2 w-80 border border-gray-300 dark:border-gray-700">
+  <div v-if="isRepoCardShow" class="bg-white dark:bg-gray-900 absolute rounded-md mt-2 shadow-sm p-2 w-full border border-gray-300 dark:border-gray-700">
     <div v-if="isLoading" class="w-70 flex flex-col justify-center items-center">
       <div class="flex flex-col w-full gap-4 p-2">
         <div v-for="i in 10" :key="i" class="flex items-center gap-2 w-full">
@@ -70,7 +70,3 @@ defineExpose({
     </div>
   </div>
 </template>
-
-<style>
-
-</style>

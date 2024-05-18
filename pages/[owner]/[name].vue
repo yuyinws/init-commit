@@ -65,12 +65,12 @@ defineOgImageComponent(
           <div class="flex">
             <div>
               <div class="flex items-center gap-1 text-sm">
-                <div class="text-gray-800 font-medium">
+                <div class="text-gray-800 dark:text-gray-200 font-medium">
                   {{ `${owner}/${name}` }}
                 </div>
               </div>
 
-              <div class="font-semibold text-2xl">
+              <div class="font-semibold text-2xl my-2">
                 {{ commitMeta.message }}
               </div>
 
