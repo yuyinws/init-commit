@@ -44,9 +44,8 @@ const onInputValUpdate = useDebounceFn(async (event: string) => {
       <UInput
         v-model="inputContent"
         icon="i-radix-icons-github-logo"
-        class="w-[28rem]"
+        class="w-[24rem] xl:[w-28rem]"
         variant="outline"
-        color="gray"
         autofocus
         placeholder="Search a GitHub repository …"
         size="xl"
