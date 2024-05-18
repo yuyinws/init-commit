@@ -17,6 +17,9 @@ importers:
       dayjs:
         specifier: ^1.11.11
         version: 1.11.11
+      html-to-image:
+        specifier: ^1.11.11
+        version: 1.11.11
       nuxt-module-cli-shortcuts:
         specifier: ^0.0.2
         version: 0.0.2(rollup@4.16.3)
@@ -3134,6 +3137,9 @@ packages:
   html-tags@3.3.1:
     resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
     engines: {node: '>=8'}
+
+  html-to-image@1.11.11:
+    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
 
   http-assert@1.5.0:
     resolution: {integrity: sha512-uPpH7OKX4H25hBmU6G1jWNaqJGpTXxey+YOUizJUAgu0AjLUeC8D73hTrhvDS5D+GJN1DN1+hhc/eF/wpxtp0w==}
@@ -9400,6 +9406,8 @@ snapshots:
       lru-cache: 10.2.2
 
   html-tags@3.3.1: {}
+
+  html-to-image@1.11.11: {}
 
   http-assert@1.5.0:
     dependencies:

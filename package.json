@@ -14,6 +14,7 @@
     "@iconify-json/mdi": "^1.1.66",
     "@octokit/core": "^6.1.2",
     "dayjs": "^1.11.11",
+    "html-to-image": "^1.11.11",
     "nuxt-module-cli-shortcuts": "^0.0.2",
     "ufo": "^1.5.3",
     "uncrypto": "^0.1.3"

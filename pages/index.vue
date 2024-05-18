@@ -36,6 +36,7 @@ defineOgImageComponent('NuxtSeo')
       <UInput
         v-model="inputContent"
         class="w-[25rem]"
+        autofocus
         placeholder="Search for a repo..."
         size="xl"
         @update:model-value="onInputValUpdate"
