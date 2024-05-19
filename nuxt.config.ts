@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   site: {
-    url: 'http://localhost:3000',
+    url: 'https://initcommit.info/',
   },
   modules: [
     '@vueuse/nuxt',
