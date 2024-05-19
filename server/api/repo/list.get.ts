@@ -11,10 +11,13 @@ export default defineEventHandler(async (event): Promise<Response<Repository[]>>
         data: [],
       }
     }
+
+    const config = useRuntimeConfig()
+
     const response = await $fetch<any>('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${config.github.token}`,
       },
       body: JSON.stringify({
         query: SearchRepositoriesQuery,

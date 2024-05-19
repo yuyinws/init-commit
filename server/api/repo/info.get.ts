@@ -7,10 +7,12 @@ export default defineEventHandler(async (event): Promise<Response<{
 }>> => {
   const { owner, name } = getQuery(event)
 
+  const config = useRuntimeConfig()
+
   const repoInfoResponse = await $fetch<any>('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${config.github.token}`,
     },
     body: JSON.stringify({
       query: repoInfoQuery,

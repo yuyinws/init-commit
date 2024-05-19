@@ -22,10 +22,12 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
 
     const defaultBranch = branchsResponse.data!.defaultRef
 
+    const config = useRuntimeConfig()
+
     const totalCommitResponse = await $fetch<any>('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${config.github.token}`,
       },
       body: JSON.stringify({
         query: totalCommitQuery,
@@ -45,7 +47,7 @@ export default defineEventHandler(async (event): Promise<Response<Commit>> => {
     const initalCommitResponse = await $fetch<any>('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${config.github.token}`,
       },
       body: JSON.stringify({
         query: initalCommitQuery,

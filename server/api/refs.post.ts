@@ -8,10 +8,12 @@ export default defineEventHandler(async (event): Promise<Response<Refs>> => {
     if (!name || !owner)
       throw new Error('Missing parameters')
 
+    const config = useRuntimeConfig()
+
     const response = await $fetch<any>('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${config.github.token}`,
       },
       body: JSON.stringify({
         query: refQuery,
