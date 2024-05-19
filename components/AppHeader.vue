@@ -3,7 +3,7 @@
 
 <template>
   <header class="flex justify-end gap-2 p-2">
-    <NuxtLink class="flex items-center" target="_blank" to="https://github.com/yuyinws/comm1t">
+    <NuxtLink class="flex items-center" target="_blank" to="https://github.com/yuyinws/init-commit">
       <UButton
         icon="i-radix-icons:github-logo"
         color="gray"

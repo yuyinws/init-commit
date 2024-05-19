@@ -8,7 +8,7 @@ const RepositoriesRef = ref<InstanceType<typeof Repositories>>()
 
 const selectedRepo = ref<Repository>()
 
-defineOgImageComponent('NuxtSeo')
+defineOgImageComponent('Home')
 
 const selectedRepoShow = ref(false)
 const inputRef = ref()
@@ -38,7 +38,7 @@ const onInputValUpdate = useDebounceFn(async (event: string) => {
       Init Commit
     </h1>
     <p class="mt-6 text-lg tracking-tight text-gray-600 dark:text-gray-300">
-      Find a repository's first commit
+      Find the initial commit of a repository.
     </p>
     <div ref="inputRef" class="relative mt-5">
       <UInput

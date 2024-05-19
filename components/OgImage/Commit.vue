@@ -52,7 +52,7 @@ defineProps<{
           {{ commitMeta.author.name }}
         </div>
         <div class="text-gray-500 flex flex-row gap-1">
-          first commited on
+          initial commited on
           <NuxtTime
             style="font-family: Cal Sans;"
             :datetime="commitMeta.committedDate"

@@ -11,8 +11,8 @@ useSeoMeta({
 useServerSeoMeta({
   ogTitle: `init-commit.info - @${owner}/${name}`,
   twitterTitle: `init-commit.info - @${owner}/${name}`,
-  description: `The first commit of ${owner}/${name} on GitHub`,
-  ogDescription: `The first commit of ${owner}/${name} on GitHub`,
+  description: `The initial commit of ${owner}/${name} on GitHub`,
+  ogDescription: `The initial commit of ${owner}/${name} on GitHub`,
   twitterCard: 'summary_large_image',
 })
 
@@ -54,8 +54,8 @@ const avatarUrl = computed(() => {
 })
 
 const shareUrl = computed(() => {
-  const message = `Check out ${owner}/${name}'s first commit on GitHub`
-  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${message}\n\nhttps://comm1t.yuy1n.io/${owner}/${name}`)}`
+  const message = `Check out ${owner}/${name}'s initial commit on GitHub`
+  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${message}\n\nhttps://initcommit.info/${owner}/${name}`)}`
 })
 
 defineOgImageComponent(
@@ -175,7 +175,7 @@ async function saveAsPng() {
                     {{ commitMeta!.author.name }}
                   </div>
                   <div class="text-gray-500">
-                    first commited on
+                    initial commited on
                     <NuxtTime
                       style="font-family: Cal Sans;"
                       :datetime="commitMeta!.committedDate"
