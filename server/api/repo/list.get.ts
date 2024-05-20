@@ -1,4 +1,3 @@
-import { env } from 'node:process'
 import { SearchRepositoriesQuery } from '~/server/gql'
 import type { Repository, Response } from '~/types'
 

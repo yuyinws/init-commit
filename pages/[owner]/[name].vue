@@ -18,13 +18,7 @@ useServerSeoMeta({
 
 const { data, pending, error } = await useAsyncData('commitInfo', async () => {
   const [commit, repoinfo] = await Promise.all([
-    $fetch('/api/commit', {
-      method: 'POST',
-      body: {
-        owner,
-        name,
-      },
-    }),
+    $fetch(`/api/${owner}/${name}/commit`),
     $fetch('/api/repo/info', {
       params: {
         owner,
@@ -115,8 +109,10 @@ async function saveAsPng() {
       </div>
     </div>
 
-    <div v-else-if="error">
-      error
+    <div v-else-if="error" class="w-[400px] sm:w-[500px]">
+      <UCard class="text-red-500">
+        {{ error }}
+      </UCard>
     </div>
 
     <div v-else class="w-[400px] sm:w-[500px]">
