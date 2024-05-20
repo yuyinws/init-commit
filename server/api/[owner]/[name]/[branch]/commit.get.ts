@@ -2,7 +2,7 @@ import { initalCommitQuery, totalCommitQuery } from '~/server/gql'
 import type { Commit, Refs, Response } from '~/types'
 
 export default defineCachedEventHandler(async (event): Promise<Response<Commit>> => {
-  const { owner, name } = getRouterParams(event)
+  const { owner, name, branch } = getRouterParams(event)
 
   const branchsResponse = await $fetch<Response<Refs>>(`/api/${owner}/${name}/refs`)
 
@@ -20,7 +20,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
       variables: {
         name,
         owner,
-        ref: defaultBranch,
+        ref: branch || defaultBranch,
       },
     }),
   })
@@ -40,7 +40,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
       variables: {
         name,
         owner,
-        ref: defaultBranch,
+        ref: branch || defaultBranch,
         after,
       },
     }),

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { toPng } from 'html-to-image'
+import { useRouteParams } from '@vueuse/router'
 
 const route = useRoute()
-const { owner, name } = route.params
+
+const { owner, name, all } = route.params
 
 useSeoMeta({
   title: `init-commit.info - @${owner}/${name}`,
@@ -16,9 +18,13 @@ useServerSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-const { data, pending, error } = await useAsyncData('commitInfo', async () => {
+const currentBranch = ref(all?.[0] || '')
+const defaultBranch = ref('')
+const branchs = ref<{ name: string, default: boolean }[]>([])
+
+const { data, pending, error, refresh } = await useAsyncData('commitInfo', async () => {
   const [commit, repoinfo] = await Promise.all([
-    $fetch(`/api/${owner}/${name}/commit`),
+    $fetch(`/api/${owner}/${name}/${currentBranch.value}/commit`),
     $fetch('/api/repo/info', {
       params: {
         owner,
@@ -39,9 +45,26 @@ const commitMeta = computed(() => {
   return data.value?.commit.data?.commit
 })
 
-const defaultBranch = computed(() => {
-  return data.value?.commit.data?.branchs.defaultRef
+watch(data, (val) => {
+  currentBranch.value = currentBranch.value || val?.commit.data?.branchs.defaultRef || ''
+  defaultBranch.value = val?.commit.data?.branchs.defaultRef || ''
+  branchs.value = (val?.commit.data?.branchs.refs || []).map((item) => {
+    return {
+      name: item,
+      default: item === val?.commit.data?.branchs.defaultRef,
+    }
+  })
+}, {
+  immediate: true,
 })
+
+// const defaultBranch = computed(() => {
+//   return data.value?.commit.data?.branchs.defaultRef
+// })
+
+// const branchs = computed(() => {
+//   return data.value?.commit.data?.branchs.refs
+// })
 
 const avatarUrl = computed(() => {
   return data.value?.repoinfo.data?.ownerAvatarUrl
@@ -78,11 +101,23 @@ async function saveAsPng() {
     console.log(error)
   }
 }
+
+const _allParams = useRouteParams('all')
+
+function handleBranchUpdate(branch: string) {
+  _allParams.value = [branch]
+  refresh()
+}
 </script>
 
 <template>
   <div class="flex flex-col justify-center mt-20 h-full items-center p-5">
     <div v-if="pending" class="w-[400px] sm:w-[500px]">
+      <div class="flex justify-between w-full mb-5">
+        <USkeleton class="h-10 w-[183px]" />
+        <USkeleton class="h-10 w-[96px]" />
+      </div>
+
       <UCard>
         <div class="flex">
           <div class="w-full">
@@ -116,6 +151,51 @@ async function saveAsPng() {
     </div>
 
     <div v-else class="w-[400px] sm:w-[500px]">
+      <div class="flex justify-between w-full mb-5">
+        <USelectMenu
+          v-model="currentBranch"
+          searchable
+          option-attribute="name"
+          value-attribute="name"
+          icon="i-ion:git-branch"
+          class="w-[12rem]"
+          size="lg"
+          :options="branchs"
+          @update:model-value="handleBranchUpdate"
+        >
+          <template #option="{ option }">
+            <div class="truncate">
+              {{ option.name }}
+            </div>
+            <UBadge v-if="option.default" color="gray" variant="solid">
+              Default
+            </UBadge>
+          </template>
+
+          <template #label>
+            <div class="truncate">
+              <span class="mr-3">
+                {{ currentBranch }}
+              </span>
+              <UBadge v-if="currentBranch === defaultBranch" color="gray" variant="solid">
+                Default
+              </UBadge>
+            </div>
+          </template>
+        </USelectMenu>
+
+        <nuxt-link :to="shareUrl" target="_blank">
+          <UButton
+            icon="i-ri:twitter-x-fill"
+            size="lg"
+            color="black"
+            variant="solid"
+            label="Share"
+            :trailing="false"
+          />
+        </nuxt-link>
+      </div>
+
       <nuxt-link
         :to="`https://github.com/${owner}/${name}/commit/${commitMeta!.oid}`"
         target="_blank"
@@ -139,7 +219,7 @@ async function saveAsPng() {
                   <div class="flex items-center">
                     <UIcon name="i-ion:git-branch" class="text-gray-500" />
                     <div class="text-gray-500">
-                      {{ defaultBranch }}
+                      {{ currentBranch }}
                     </div>
                   </div>
                   <div class="flex items-center gap-1 ">
@@ -192,17 +272,6 @@ async function saveAsPng() {
       </nuxt-link>
 
       <div class="flex justify-between w-full mt-5">
-        <nuxt-link :to="shareUrl" target="_blank">
-          <UButton
-            icon="i-ri:twitter-x-fill"
-            size="lg"
-            color="black"
-            variant="solid"
-            label="Share"
-            :trailing="false"
-          />
-        </nuxt-link>
-
         <UButton
           icon="i-radix-icons:image"
           size="lg"
