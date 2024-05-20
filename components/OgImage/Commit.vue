@@ -55,9 +55,10 @@ defineProps<{
         </div>
         <div class="text-gray-500 flex flex-row gap-1">
           initial commited on
+
           <NuxtTime
-            style="font-family: Cal Sans;"
-            :datetime="commitMeta.committedDate"
+            class="font-semibold"
+            :datetime="commitMeta!.committedDate"
             year="numeric"
             month="long"
             day="numeric"

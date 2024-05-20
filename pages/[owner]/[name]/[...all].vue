@@ -239,22 +239,22 @@ function handleBranchUpdate(branch: string) {
                   </div>
                 </div>
 
-                <div class="flex flex-wrap items-center text-sm gap-1 mt-10">
+                <div class="flex flex-wrap items-center text-base gap-1 mt-10">
                   <img class="w-5 h-5 rounded-full" :src="commitMeta!.author.avatarUrl" alt="">
                   <div class="font-medium">
                     {{ commitMeta!.author.name }}
                   </div>
                   <div class="text-gray-500">
                     initial commited on
-                    <NuxtTime
-                      style="font-family: Cal Sans;"
-                      :datetime="commitMeta!.committedDate"
-                      year="numeric"
-                      month="long"
-                      day="numeric"
-                      locale="en-US"
-                    />
                   </div>
+                  <NuxtTime
+                    class="font-medium"
+                    :datetime="commitMeta!.committedDate"
+                    year="numeric"
+                    month="long"
+                    day="numeric"
+                    locale="en-US"
+                  />
                 </div>
               </div>
               <div class="flex flex-shrink-0 font-semibold text-gray-400 gap-1">
