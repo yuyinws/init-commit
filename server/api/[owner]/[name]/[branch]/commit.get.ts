@@ -8,6 +8,8 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
 
   const defaultBranch = branchsResponse.data!.defaultRef
 
+  const _branch = branch === '_' ? defaultBranch : branch
+
   const config = useRuntimeConfig()
 
   const totalCommitResponse = await $fetch<any>('https://api.github.com/graphql', {
@@ -20,7 +22,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
       variables: {
         name,
         owner,
-        ref: branch || defaultBranch,
+        ref: decodeURIComponent(_branch),
       },
     }),
   })
@@ -40,7 +42,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
       variables: {
         name,
         owner,
-        ref: branch || defaultBranch,
+        ref: decodeURIComponent(_branch),
         after,
       },
     }),
