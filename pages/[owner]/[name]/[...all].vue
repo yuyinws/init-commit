@@ -205,7 +205,7 @@ function handleBranchUpdate(branch: string) {
                   </div>
                 </div>
 
-                <div class="font-semibold text-2xl my-2">
+                <div class="font-semibold text-2xl my-2 w-[290px] line-clamp-3">
                   {{ commitMeta!.message }}
                 </div>
 

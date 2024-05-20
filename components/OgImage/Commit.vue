@@ -18,7 +18,7 @@ defineProps<{
           <div class="text-gray-800  font-medium text-4xl">
             {{ `${owner}/${name}` }}
           </div>
-          <div class="text-6xl font-bold mt-4">
+          <div class="text-6xl font-bold w-[590px] mt-4 line-clamp-3">
             {{ commitMeta.message }}
           </div>
           <div class="flex flex-row mt-4 gap-5">
