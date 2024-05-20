@@ -6,7 +6,7 @@ defineProps<{
   avatarUrl: string
   owner: string
   name: string
-  defaultBranch: string
+  currentBranch: string
 }>()
 </script>
 
@@ -24,7 +24,9 @@ defineProps<{
           <div class="flex flex-row mt-4 gap-5">
             <div class="flex flex-row gap-2 items-center text-3xl text-gray-500">
               <UIcon name="i-ion:git-branch" />
-              {{ defaultBranch }}
+              <div class="text-gray-500 truncate max-w-[250px]">
+                {{ currentBranch }}
+              </div>
             </div>
             <div class="flex flex-row gap-2 items-center text-3xl text-gray-500">
               <UIcon name="i-radix-icons-commit" />

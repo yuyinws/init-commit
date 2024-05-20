@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   site: {
     url: 'https://initcommit.info/',
   },
+  devServer: {
+    port: 3003,
+  },
   modules: [
     '@vueuse/nuxt',
     '@nuxt/ui',
@@ -18,6 +21,7 @@ export default defineNuxtConfig({
     umami: {
       customEndpoint: '/api/send',
       version: 2,
+      ignoreLocalhost: true,
     },
   },
   shortcuts: {

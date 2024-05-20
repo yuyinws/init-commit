@@ -8,7 +8,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
 
   const defaultBranch = branchsResponse.data!.defaultRef
 
-  const _branch = branch === '_' ? defaultBranch : branch
+  const _branch = branch === '_' ? defaultBranch : decodeURIComponent(branch)
 
   const config = useRuntimeConfig()
 
@@ -22,7 +22,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
       variables: {
         name,
         owner,
-        ref: decodeURIComponent(_branch),
+        ref: _branch,
       },
     }),
   })
@@ -42,7 +42,7 @@ export default defineCachedEventHandler(async (event): Promise<Response<Commit>>
       variables: {
         name,
         owner,
-        ref: decodeURIComponent(_branch),
+        ref: _branch,
         after,
       },
     }),

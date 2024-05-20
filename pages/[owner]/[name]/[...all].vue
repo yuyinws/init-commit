@@ -23,8 +23,9 @@ const defaultBranch = ref('')
 const branchs = ref<{ name: string, default: boolean }[]>([])
 
 const { data, pending, error } = await useAsyncData('commitInfo', async () => {
+  const _branch = currentBranch.value || '_'
   const [commit, repoinfo] = await Promise.all([
-    $fetch(`/api/${owner}/${name}/${currentBranch.value || '_'}/commit`),
+    $fetch(`/api/${owner}/${name}/${encodeURIComponent(_branch)}/commit`),
     $fetch('/api/repo/info', {
       params: {
         owner,
@@ -56,7 +57,7 @@ watch(data, (val) => {
       }
     })
   }
-})
+}, { immediate: true })
 
 const avatarUrl = computed(() => {
   return data.value?.repoinfo.data?.ownerAvatarUrl
@@ -74,7 +75,7 @@ defineOgImageComponent(
     avatarUrl,
     owner,
     name,
-    defaultBranch,
+    currentBranch,
   },
 )
 
@@ -150,7 +151,7 @@ function handleBranchUpdate(branch: string) {
           option-attribute="name"
           value-attribute="name"
           icon="i-ion:git-branch"
-          class="min-w-[141px]"
+          class="min-w-[141px] max-w-[230px]"
           size="lg"
           :options="branchs"
           @update:model-value="handleBranchUpdate"
@@ -208,9 +209,9 @@ function handleBranchUpdate(branch: string) {
                 </div>
 
                 <div class="flex items-center gap-2 text-xs mt-1">
-                  <div class="flex items-center">
+                  <div class="flex items-center gap-1">
                     <UIcon name="i-ion:git-branch" class="text-gray-500" />
-                    <div class="text-gray-500">
+                    <div class="text-gray-500 truncate max-w-[150px]">
                       {{ currentBranch }}
                     </div>
                   </div>
