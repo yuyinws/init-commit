@@ -15,6 +15,7 @@
     "dayjs": "^1.11.11",
     "html-to-image": "^1.11.11",
     "nuxt-module-cli-shortcuts": "^0.0.2",
+    "nuxt-umami": "^2.6.1",
     "ufo": "^1.5.3",
     "uncrypto": "^0.1.3"
   },

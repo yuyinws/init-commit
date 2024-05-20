@@ -12,6 +12,13 @@ export default defineNuxtConfig({
     'nuxt-time',
     'nuxt-module-cli-shortcuts',
   ],
+  extends: ['nuxt-umami'],
+  appConfig: {
+    umami: {
+      customEndpoint: '/api/send',
+      version: 2,
+    },
+  },
   shortcuts: {
     rawMode: true,
   },
