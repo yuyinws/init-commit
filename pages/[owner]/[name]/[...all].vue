@@ -152,7 +152,7 @@ function handleBranchUpdate(branch: string) {
           <div class="flex justify-between">
             <UButton label="Try again" icon="i-tabler-reload" color="gray" @click="refresh" />
 
-            <nuxt-link to="https://github.com/yuyinws/init-commit/issues/new">
+            <nuxt-link target="_blank" to="https://github.com/yuyinws/init-commit/issues/new">
               <UButton label="Report issue" icon="i-tabler-file-report" color="gray" />
             </nuxt-link>
           </div>
