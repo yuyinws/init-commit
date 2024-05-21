@@ -19,11 +19,13 @@ useServerSeoMeta({
 })
 
 const currentBranch = ref(all?.[0] || '')
+
 const defaultBranch = ref('')
 const branchs = ref<{ name: string, default: boolean }[]>([])
 
-const { data, pending, error } = await useAsyncData('commitInfo', async () => {
+const { data, pending, error, refresh } = await useAsyncData('commitInfo', async () => {
   const _branch = currentBranch.value || '_'
+
   const [commit, repoinfo] = await Promise.all([
     $fetch(`/api/${owner}/${name}/${encodeURIComponent(_branch)}/commit`),
     $fetch('/api/repo/info', {
@@ -40,6 +42,8 @@ const { data, pending, error } = await useAsyncData('commitInfo', async () => {
   }
 }, {
   lazy: true,
+  // @ts-expect-error any
+  getCachedData: () => null,
 })
 
 const commitMeta = computed(() => {
@@ -57,7 +61,7 @@ watch(data, (val) => {
       }
     })
   }
-}, { immediate: true })
+})
 
 const avatarUrl = computed(() => {
   return data.value?.repoinfo.data?.ownerAvatarUrl
@@ -122,13 +126,13 @@ function handleBranchUpdate(branch: string) {
               <USkeleton class="h-4 w-[100px]" />
               <USkeleton class="h-4 w-[200px]" />
             </div>
-            <div class="mt-10 flex items-center gap-2">
-              <USkeleton class="h-5 w-5" :ui="{ rounded: 'rounded-full' }" />
-              <USkeleton class="h-4 w-[85px]" />
-            </div>
           </div>
 
           <USkeleton class="h-20 w-20 flex-shrink-0" :ui="{ rounded: 'rounded-xl' }" />
+        </div>
+        <div class="mt-10 flex items-center gap-2">
+          <USkeleton class="h-5 w-5" :ui="{ rounded: 'rounded-full' }" />
+          <USkeleton class="h-4 w-[285px]" />
         </div>
       </UCard>
 
@@ -139,8 +143,22 @@ function handleBranchUpdate(branch: string) {
     </div>
 
     <div v-else-if="error" class="w-[400px] sm:w-[500px]">
-      <UCard class="text-red-500">
-        {{ error }}
+      <UCard>
+        <template #header>
+          Ops! Something went wrong
+        </template>
+        <p class="text-red-500">
+          {{ error }}
+        </p>
+        <template #footer>
+          <div class="flex justify-between">
+            <UButton label="Try again" icon="i-tabler-reload" color="gray" @click="refresh" />
+
+            <nuxt-link to="https://github.com/yuyinws/init-commit/issues/new">
+              <UButton label="Report issue" icon="i-tabler-file-report" color="gray" />
+            </nuxt-link>
+          </div>
+        </template>
       </UCard>
     </div>
 
@@ -238,28 +256,27 @@ function handleBranchUpdate(branch: string) {
                     </div>
                   </div>
                 </div>
-
-                <div class="flex flex-wrap items-center text-base gap-1 mt-10">
-                  <img class="w-5 h-5 rounded-full" :src="commitMeta!.author.avatarUrl" alt="">
-                  <div class="font-medium">
-                    {{ commitMeta!.author.name }}
-                  </div>
-                  <div class="text-gray-500">
-                    initial commited on
-                  </div>
-                  <NuxtTime
-                    class="font-medium"
-                    :datetime="commitMeta!.committedDate"
-                    year="numeric"
-                    month="long"
-                    day="numeric"
-                    locale="en-US"
-                  />
-                </div>
               </div>
               <div class="flex flex-shrink-0 font-semibold text-gray-400 gap-1">
                 <img class="w-20 h-20 rounded-xl" :src="avatarUrl" alt="">
               </div>
+            </div>
+            <div class="flex flex-wrap items-center text-sm sm:text-base gap-1 mt-10">
+              <img class="w-5 h-5 rounded-full" :src="commitMeta!.author.avatarUrl" alt="">
+              <div class="font-medium">
+                {{ commitMeta!.author.name }}
+              </div>
+              <div class="text-gray-500">
+                initial commited on
+              </div>
+              <NuxtTime
+                class="font-medium"
+                :datetime="commitMeta!.committedDate"
+                year="numeric"
+                month="long"
+                day="numeric"
+                locale="en-US"
+              />
             </div>
           </UCard>
         </div>
