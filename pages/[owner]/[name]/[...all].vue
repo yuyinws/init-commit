@@ -23,7 +23,7 @@ const currentBranch = ref(all?.[0] || '')
 const defaultBranch = ref('')
 const branchs = ref<{ name: string, default: boolean }[]>([])
 
-const { data, pending, error, refresh } = await useAsyncData('commitInfo', async () => {
+const { data, pending, error, refresh } = await useAsyncData(`${owner}/${name}/${currentBranch.value}`, async () => {
   const _branch = currentBranch.value || '_'
 
   const [commit, repoinfo] = await Promise.all([
@@ -42,8 +42,6 @@ const { data, pending, error, refresh } = await useAsyncData('commitInfo', async
   }
 }, {
   lazy: true,
-  // @ts-expect-error any
-  getCachedData: () => null,
 })
 
 const commitMeta = computed(() => {
