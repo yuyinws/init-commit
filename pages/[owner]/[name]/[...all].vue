@@ -59,7 +59,7 @@ watch(data, (val) => {
       }
     })
   }
-})
+}, { immediate: true })
 
 const avatarUrl = computed(() => {
   return data.value?.repoinfo.data?.ownerAvatarUrl
