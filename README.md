@@ -23,7 +23,7 @@
 
 ## Develop
 
-Generate a new (GitHub Token)[https://github.com/settings/tokens]
+Generate a new [GitHub Token](https://github.com/settings/tokens).
 
 Set your environment variables in a `.env` file:
 
