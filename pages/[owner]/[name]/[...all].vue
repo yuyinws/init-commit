@@ -67,7 +67,7 @@ const avatarUrl = computed(() => {
 
 const shareUrl = computed(() => {
   const message = `Check out ${owner}/${name}'s initial commit on GitHub`
-  const url = currentBranch.value === defaultBranch.value ? `https://initcommit.info/${owner}/${name}` : `https://initcommit.info/${owner}/${name}/${currentBranch.value}`
+  const url = currentBranch.value === defaultBranch.value ? `https://initcommit.info/${owner}/${name}` : `https://initcommit.info/${owner}/${name}/${encodeURIComponent(currentBranch.value)}`
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${message}\n\n${url}`)}`
 })
 
