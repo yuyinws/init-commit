@@ -4,6 +4,7 @@
 // @version      0.0.1
 // @description  Find the initial commit of the repository
 // @author       yuyinws
+// @license      MIT
 // @match        https://github.com/**
 // @icon         https://initcommit.info/logo.svg
 // @grant        none
