@@ -1,4 +1,4 @@
-![preview](https://cdn.jsdelivr.net/gh/yuyinws/static@master/2024/05/upgit_20240521_1716273196.png)
+![preivew](https://cdn.jsdelivr.net/gh/yuyinws/static@master/2024/05/upgit_20240521_1716273548.png)
 
 <p align="center">
 <a href="https://initcommit.info/">Website</a>
