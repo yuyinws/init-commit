@@ -52,6 +52,7 @@ export default defineNuxtConfig({
   $production: {
     routeRules: {
       '/**': { isr: true },
+      '/api/**': { isr: false },
     },
   },
 })
