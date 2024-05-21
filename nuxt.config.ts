@@ -44,4 +44,14 @@ export default defineNuxtConfig({
   experimental: {
     componentIslands: true,
   },
+  nitro: {
+    prerender: {
+      routes: ['/'],
+    },
+  },
+  $production: {
+    routeRules: {
+      '/**': { isr: true },
+    },
+  },
 })
