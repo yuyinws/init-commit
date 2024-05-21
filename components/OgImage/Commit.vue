@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="font-sans px-16 py-20 h-full w-full bg-white">
+  <div class="font-sans px-16 py-20 h-full w-full bg-slate-50">
     <div class="flex flex-col w-full justify-between h-full">
       <div class="flex w-full flex-row justify-between">
         <div class="max-w-[52rem]">
