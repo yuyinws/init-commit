@@ -30,6 +30,18 @@ const onInputValUpdate = useDebounceFn(async (event: string) => {
     toast.add({ title: 'Error', description: String(error) })
   }
 }, 500)
+
+function onPaste(event: ClipboardEvent) {
+  const clipboardData = event.clipboardData
+  const clipboardText = clipboardData?.getData('text')
+
+  const regexp = /https:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_\-\.]+)/
+
+  if (regexp.test(clipboardText)) {
+    const [, owner, name] = clipboardText.match(regexp) as RegExpMatchArray
+    navigateTo(`/${owner}/${name}`)
+  }
+}
 </script>
 
 <template>
@@ -50,6 +62,7 @@ const onInputValUpdate = useDebounceFn(async (event: string) => {
         placeholder="Search a GitHub repository …"
         size="xl"
         @update:model-value="onInputValUpdate"
+        @paste="onPaste"
       >
         <template #trailing>
           <UIcon name="i-radix-icons-magnifying-glass" />
