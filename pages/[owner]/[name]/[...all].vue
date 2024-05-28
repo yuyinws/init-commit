@@ -150,6 +150,10 @@ function handleBranchUpdate(branch: string) {
         </p>
         <template #footer>
           <div class="flex justify-between">
+            <nuxt-link to="/">
+              <UButton label="Go back" icon="i-tabler-arrow-left" color="gray" />
+            </nuxt-link>
+
             <UButton label="Try again" icon="i-tabler-reload" color="gray" @click="refresh" />
 
             <nuxt-link target="_blank" to="https://github.com/yuyinws/init-commit/issues/new">
