@@ -14,6 +14,9 @@ export interface Commit {
     author: {
       avatarUrl: string
       name: string
+      user: {
+        login: string
+      }
     }
     committedDate: string
     changedFilesIfAvailable: number

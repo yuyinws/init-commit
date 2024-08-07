@@ -14,7 +14,6 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     'nuxt-time',
     'nuxt-module-cli-shortcuts',
-    '@vueuse/nuxt',
   ],
   extends: ['nuxt-umami'],
   appConfig: {

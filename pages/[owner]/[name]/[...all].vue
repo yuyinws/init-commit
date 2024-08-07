@@ -109,7 +109,7 @@ function handleBranchUpdate(branch: string) {
 
 <template>
   <div class="flex flex-col justify-center mt-20 h-full items-center p-5">
-    <div v-if="pending" class="w-[400px] sm:w-[500px]">
+    <div v-if="pending" class="w-[400px] sm:w-[560px] lg:w-[640px]">
       <div class="flex justify-between w-full mb-5">
         <USkeleton class="h-10 w-[141px]" />
         <USkeleton class="h-10 w-[96px]" />
@@ -133,11 +133,6 @@ function handleBranchUpdate(branch: string) {
           <USkeleton class="h-4 w-[285px]" />
         </div>
       </UCard>
-
-      <div class="flex justify-between w-full mt-5">
-        <USkeleton class="h-10 w-[141px]" />
-        <USkeleton class="h-10 w-[141px]" />
-      </div>
     </div>
 
     <div v-else-if="error" class="w-[400px] sm:w-[500px]">
@@ -164,8 +159,19 @@ function handleBranchUpdate(branch: string) {
       </UCard>
     </div>
 
-    <div v-else class="w-[400px] sm:w-[500px]">
-      <div class="flex justify-between w-full mb-5">
+    <div v-else class="w-[400px] sm:w-[560px] lg:w-[640px]">
+      <div class="mb-3">
+        <UButton
+          to="/"
+          icon="i-radix-icons:chevron-left"
+          color="gray"
+          variant="ghost"
+          label="Find another"
+          :trailing="false"
+        />
+      </div>
+
+      <div class="flex w-full mb-7">
         <USelectMenu
           :model-value="currentBranch"
           searchable
@@ -198,61 +204,78 @@ function handleBranchUpdate(branch: string) {
           </template>
         </USelectMenu>
 
-        <nuxt-link :to="shareUrl" target="_blank">
-          <UButton
-            icon="i-ri:twitter-x-fill"
-            size="lg"
-            color="black"
-            variant="solid"
-            label="Share"
-            :trailing="false"
-          />
-        </nuxt-link>
+        <div class="flex-1" />
+
+        <UButton
+          icon="i-radix-icons:image"
+          size="lg"
+          color="gray"
+          variant="solid"
+          label="Save as PNG"
+          class="mr-3"
+          :trailing="false"
+          @click="saveAsPng"
+        />
+
+        <UButton
+          :to="shareUrl" target="_blank"
+          icon="i-ri:twitter-x-fill"
+          size="lg"
+          color="black"
+          variant="solid"
+          label="Share"
+          :trailing="false"
+        />
       </div>
 
-      <nuxt-link
-        :to="`https://github.com/${owner}/${name}/commit/${commitMeta!.oid}`"
-        target="_blank"
-        class="mt-80"
-      >
+      <GlareCard>
         <div ref="cardRef">
-          <UCard>
+          <UCard class="bg-slate-950 dark:bg-slate-950 text-gray-200">
             <div class="flex justify-between">
               <div>
-                <div class="flex items-center gap-1 text-sm">
-                  <div class="text-gray-800 dark:text-gray-200 font-medium">
+                <div class="flex items-center font-medium text-[15px]">
+                  <NuxtLink
+                    :to="`https://github.com/${owner}/${name}`" target="_blank"
+                    class="hover:underline"
+                  >
                     {{ `${owner}/${name}` }}
-                  </div>
+                  </NuxtLink>
                 </div>
 
-                <div class="font-semibold text-2xl my-2 w-[290px] line-clamp-3">
+                <NuxtLink
+                  :to="`https://github.com/${owner}/${name}/commit/${commitMeta!.oid}`" target="_blank"
+                  class="font-semibold text-[32px] mb-1 w-[290px] line-clamp-3 hover:underline"
+                >
                   {{ commitMeta!.message }}
-                </div>
+                </NuxtLink>
 
-                <div class="flex items-center gap-2 text-xs mt-1">
+                <div class="flex items-center gap-2 text-[13px] mt-1">
                   <div class="flex items-center gap-1">
-                    <UIcon name="i-ion:git-branch" class="text-gray-500" />
-                    <div class="text-gray-500 truncate max-w-[150px]">
+                    <UIcon name="i-ion:git-branch" class="text-gray-400" />
+                    <div class="text-gray-400 truncate max-w-[150px]">
                       {{ currentBranch }}
                     </div>
                   </div>
-                  <div class="flex items-center gap-1 ">
-                    <UIcon name="i-radix-icons-commit" class="text-gray-500" />
-                    <div class="text-gray-500">
+                  <NuxtLink
+                    :to="`https://github.com/${owner}/${name}/commit/${commitMeta!.oid}`" target="_blank"
+                    class="flex items-center gap-1 hover:underline"
+                  >
+                    <UIcon name="i-radix-icons-commit" class="text-gray-400" />
+                    <div class="text-gray-400">
                       {{ commitMeta!.abbreviatedOid }}
                     </div>
-                  </div>
+                  </NuxtLink>
                 </div>
 
                 <div class="flex gap-3 text-[13px] mt-2">
                   <div class="flex items-center gap-3">
-                    <div class="text-gray-500 flex items-center gap-1">
+                    <div class="text-gray-400 flex items-center gap-1">
                       <UIcon name="i-radix-icons-file" />
                       {{ formatNumber(commitMeta!.changedFilesIfAvailable) }} files changed
                     </div>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="text-gray-500 flex items-center gap-1">
+                    <div class="text-gray-400 flex items-center gap-1">
                       <UIcon name="i-radix-icons-file-plus" />
                       {{ formatNumber(commitMeta!.additions) }} lines additions
                     </div>
@@ -263,12 +286,16 @@ function handleBranchUpdate(branch: string) {
                 <img class="w-20 h-20 rounded-xl" :src="avatarUrl" alt="">
               </div>
             </div>
+            <div class="h-[60px]" />
             <div class="flex flex-wrap items-center text-sm sm:text-base gap-1 mt-10">
               <img class="w-5 h-5 rounded-full" :src="commitMeta!.author.avatarUrl" alt="">
-              <div class="font-medium">
+              <NuxtLink
+                :to="`https://github.com/${commitMeta!.author.user.login}`" target="_blank"
+                class="font-medium hover:underline"
+              >
                 {{ commitMeta!.author.name }}
-              </div>
-              <div class="text-gray-500">
+              </NuxtLink>
+              <div class="text-gray-400">
                 initial commited on
               </div>
               <NuxtTime
@@ -282,30 +309,7 @@ function handleBranchUpdate(branch: string) {
             </div>
           </UCard>
         </div>
-      </nuxt-link>
-
-      <div class="flex justify-between w-full mt-5">
-        <UButton
-          icon="i-radix-icons:image"
-          size="lg"
-          color="gray"
-          variant="solid"
-          label="Save as PNG"
-          :trailing="false"
-          @click="saveAsPng"
-        />
-
-        <nuxt-link to="/">
-          <UButton
-            icon="i-radix-icons:github-logo"
-            size="lg"
-            color="gray"
-            variant="solid"
-            label="Find another"
-            :trailing="false"
-          />
-        </nuxt-link>
-      </div>
+      </GlareCard>
     </div>
   </div>
 </template>
