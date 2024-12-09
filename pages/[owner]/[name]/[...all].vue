@@ -290,7 +290,7 @@ function handleBranchUpdate(branch: string) {
             <div class="flex flex-wrap items-center text-sm sm:text-base gap-1 mt-10">
               <img class="w-5 h-5 rounded-full" :src="commitMeta!.author.avatarUrl" alt="">
               <NuxtLink
-                :to="`https://github.com/${commitMeta!.author.user.login}`" target="_blank"
+                :to="commitMeta!.author.user?.login ? `https://github.com/${commitMeta!.author.user?.login}` : undefined" target="_blank"
                 class="font-medium hover:underline"
               >
                 {{ commitMeta!.author.name }}
